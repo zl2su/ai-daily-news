@@ -2,7 +2,6 @@ import requests
 import feedparser
 import json
 import os
-import dateutil.parser
 import time
 
 class AINewsWebGenerator:
