@@ -1,8 +1,9 @@
+# AI 뉴스 생성기 - 최종 수정
 import requests
 import feedparser
 import json
 import os
-import time # 수정완료
+import time 
 
 class AINewsWebGenerator:
     def __init__(self):
