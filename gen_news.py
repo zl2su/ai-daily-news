@@ -1,7 +1,6 @@
 import requests
 import feedparser
 import json
-from datetime import datetime
 import os
 import dateutil.parser
 import time
