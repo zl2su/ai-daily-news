@@ -1,4 +1,4 @@
-# AI 뉴스 생성기 - 최종 수정
+# AI 뉴스 생성기 - 최종 수정 #
 import requests
 import feedparser
 import json
