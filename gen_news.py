@@ -4,6 +4,7 @@ import json
 from datetime import datetime
 import os
 import dateutil.parser
+import time
 
 class AINewsWebGenerator:
     def __init__(self):
@@ -109,7 +110,7 @@ JSON 형식으로만 응답해주세요.
     
     def generate_html(self, articles, summary_data):
         """HTML 웹페이지 생성"""
-        current_time = datetime.now().strftime('%Y년 %m월 %d일 %H시 %M분')
+        current_time = time.strftime('%Y년 %m월 %d일 %H시 %M분')
         
         html_content = f"""
 <!DOCTYPE html>
@@ -117,7 +118,7 @@ JSON 형식으로만 응답해주세요.
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 뉴스 데일리 | {datetime.now().strftime('%Y-%m-%d')}</title>
+    <title>AI 뉴스 데일리 | {time.strftime('%Y-%m-%d')}</title>
     <style>
         * {{
             margin: 0;
