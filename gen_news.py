@@ -40,6 +40,12 @@ class AINewsWebGenerator:
     
     def get_claude_summary(self, articles):
         """클로드 API로 뉴스 요약"""
+        print(f"📊 Claude API 키 확인: {'설정됨' if self.claude_api_key else '설정 안됨'}")
+    
+        if not self.claude_api_key:
+            print("❌ CLAUDE_API_KEY가 설정되지 않았습니다!")
+            return None
+            
         articles_text = ""
         for i, article in enumerate(articles, 1):
             articles_text += f"{i}. {article['title']}\n"
@@ -81,18 +87,27 @@ JSON 형식으로만 응답해주세요.
         }
         
         try:
+            print("🔄 Claude API 호출 시작...")
             response = requests.post(
                 'https://api.anthropic.com/v1/messages',
                 headers=headers,
                 json=data
             )
             
+            print(f"📡 API 응답 상태: {response.status_code}")
             if response.status_code == 200:
+                print("✅ API 호출 성공!")
                 content = response.json()['content'][0]['text']
+                print(f"📝 API 응답 내용 미리보기: {content[:200]}...")
+
                 # JSON 파싱 시도
                 try:
                     return json.loads(content)
+                    print("✅ JSON 파싱 성공!")
+
                 except:
+                    print(f"❌ JSON 파싱 실패: {e}")
+                    print(f"🔍 원본 응답: {content}")
                     # JSON 파싱 실패시 기본값 반환
                     return {
                         "today_summary": "AI 뉴스 요약 처리 중 오류 발생",
@@ -101,8 +116,13 @@ JSON 형식으로만 응답해주세요.
                         "tech_highlights": ["기술 동향 분석 중"]
                     }
             else:
+                print(f"❌ API 호출 실패: {response.status_code}")
+                print(f"🔍 응답 내용: {response.text}")
                 return None
-                
+
+        except requests.exceptions.RequestException as e:
+            print(f"❌ 네트워크 오류: {e}")
+            return None
         except Exception as e:
             print(f"클로드 API 오류: {e}")
             return None
