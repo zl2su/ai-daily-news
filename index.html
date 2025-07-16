@@ -1,0 +1,408 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 뉴스 데일리 | 2025-07-16</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .update-time {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #e9ecef;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        
+        .summary-section {
+            padding: 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .summary-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .summary-card h3 {
+            color: #4facfe;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .trends-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .trend-tag {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            padding: 30px;
+        }
+        
+        .news-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .news-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            line-height: 1.4;
+        }
+        
+        .news-card p {
+            color: #7f8c8d;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+        
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .news-source {
+            background: #e8f5e8;
+            color: #2e7d32;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .news-date {
+            color: #95a5a6;
+            font-size: 0.8rem;
+        }
+        
+        .read-more {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .read-more:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        }
+        
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .refresh-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #4facfe;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .refresh-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        @media (max-width: 768px) {
+            .news-grid {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .summary-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 AI 뉴스 데일리</h1>
+            <p>오늘의 인공지능 뉴스를 한눈에</p>
+        </div>
+        
+        <div class="update-time">
+            마지막 업데이트: 2025년 07월 16일 07시 29분
+        </div>
+        
+        <div class="summary-section">
+            <div class="summary-card">
+                <h3>📈 오늘의 한줄 요약</h3>
+                <p>오늘의 AI 뉴스를 분석하고 있습니다.</p>
+            </div>
+            
+            <div class="summary-card">
+                <h3>🔥 주요 트렌드</h3>
+                <div class="trends-list">
+                    <span class="trend-tag">인공지능</span><span class="trend-tag">머신러닝</span><span class="trend-tag">딥러닝</span>
+                </div>
+            </div>
+            
+            <div class="summary-card">
+                <h3>💡 시장 인사이트</h3>
+                <p>AI 기술이 빠르게 발전하고 있습니다.</p>
+            </div>
+        </div>
+        
+        <div class="news-grid">
+        
+            <div class="news-card">
+                <div class="news-meta">
+                    <span class="news-source">VentureBeat</span>
+                    <span class="news-date">Wed, 16 Jul 2025</span>
+                </div>
+                <h3>Google study shows LLMs abandon correct answers under pressure, threatening multi-turn AI systems</h3>
+                <p>A DeepMind study finds LLMs are both stubborn and easily swayed. This confidence paradox has key implications for building AI applications....</p>
+                <a href="https://venturebeat.com/ai/google-study-shows-llms-abandon-correct-answers-under-pressure-threatening-multi-turn-ai-systems/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-meta">
+                    <span class="news-source">VentureBeat</span>
+                    <span class="news-date">Tue, 15 Jul 2025</span>
+                </div>
+                <h3>Mistral’s Voxtral goes beyond transcription with summarization, speech-triggered functions</h3>
+                <p>Mistral's open-source speech model Voxtral can recognize multiple languages, understand spoken instructions and also offer enterprise security....</p>
+                <a href="https://venturebeat.com/ai/mistrals-voxtral-goes-beyond-transcription-with-summarization-speech-triggered-functions/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-meta">
+                    <span class="news-source">VentureBeat</span>
+                    <span class="news-date">Tue, 15 Jul 2025</span>
+                </div>
+                <h3>OpenAI, Google DeepMind and Anthropic sound alarm: ‘We may be losing the ability to understand AI’</h3>
+                <p>Scientists from OpenAI, Google, Anthropic and Meta unite in rare collaboration to warn that a critical window for monitoring AI reasoning may close forever as models learn to hide their thoughts....</p>
+                <a href="https://venturebeat.com/ai/openai-google-deepmind-and-anthropic-sound-alarm-we-may-be-losing-the-ability-to-understand-ai/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-meta">
+                    <span class="news-source">VentureBeat</span>
+                    <span class="news-date">Tue, 15 Jul 2025</span>
+                </div>
+                <h3>Mira Murati says her startup Thinking Machines will release new product in ‘months’ with ‘significant open source component’</h3>
+                <p>Backed by $2B and with OpenAI’s open-weight model now in limbo, Thinking Machines could capture developer attention and interest....</p>
+                <a href="https://venturebeat.com/ai/mira-murati-says-her-startup-thinking-machines-will-release-new-product-in-months-with-significant-open-source-component/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-meta">
+                    <span class="news-source">VentureBeat</span>
+                    <span class="news-date">Tue, 15 Jul 2025</span>
+                </div>
+                <h3>Finally, a dev kit for designing on-device, mobile AI apps is here: Liquid AI’s LEAP</h3>
+                <p>LEAP addresses those needs head-on with a local-first approach that allows small models to run directly on-device, no cloud infrastructure....</p>
+                <a href="https://venturebeat.com/ai/finally-a-dev-kit-for-designing-on-device-mobile-ai-apps-is-here-liquid-ais-leap/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-meta">
+                    <span class="news-source">AI News & Artificial Intelligence | TechCrunch</span>
+                    <span class="news-date">Tue, 15 Jul 2025</span>
+                </div>
+                <h3>Of course, Grok’s AI companions want to have sex and burn down schools</h3>
+                <p>xAI's first AI companions on the Grok app are a lustful anime girl and a homicidal panda....</p>
+                <a href="https://techcrunch.com/2025/07/15/of-course-groks-ai-companions-want-to-have-sex-and-burn-down-schools/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-meta">
+                    <span class="news-source">AI News & Artificial Intelligence | TechCrunch</span>
+                    <span class="news-date">Tue, 15 Jul 2025</span>
+                </div>
+                <h3>A former OpenAI engineer describes what it’s really like to work there</h3>
+                <p>A senior engineer describes the thrill, chaos, and exhaustion of working at OpenAI this past year while launching its coding agent Codex....</p>
+                <a href="https://techcrunch.com/2025/07/15/a-former-openai-engineer-describes-what-its-really-like-to-work-there/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-meta">
+                    <span class="news-source">AI News & Artificial Intelligence | TechCrunch</span>
+                    <span class="news-date">Tue, 15 Jul 2025</span>
+                </div>
+                <h3>Meta fixes bug that could leak users’ AI prompts and generated content</h3>
+                <p>The tech giant fixed the security flaw, netting a security researcher $10,000 for privately disclosing the bug....</p>
+                <a href="https://techcrunch.com/2025/07/15/meta-fixes-bug-that-could-leak-users-ai-prompts-and-generated-content/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-meta">
+                    <span class="news-source">AI News & Artificial Intelligence | TechCrunch</span>
+                    <span class="news-date">Tue, 15 Jul 2025</span>
+                </div>
+                <h3>Mira Murati’s Thinking Machines Lab is worth $12B in seed round</h3>
+                <p>The deal marks one of the largest seed rounds — or first funding rounds — in Silicon Valley history, representing the massive investor appetite to back promising new AI labs. Thinking Machines Lab is ...</p>
+                <a href="https://techcrunch.com/2025/07/15/mira-muratis-thinking-machines-lab-is-worth-12b-in-seed-round/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-meta">
+                    <span class="news-source">AI News & Artificial Intelligence | TechCrunch</span>
+                    <span class="news-date">Tue, 15 Jul 2025</span>
+                </div>
+                <h3>Google Discover adds AI summaries, threatening publishers with further traffic declines</h3>
+                <p>The feature will appear on iOS and Android in the U.S., with a focus on trending lifestyle topics like sports and entertainment. Google also noted the feature will make it easier for people to decide ...</p>
+                <a href="https://techcrunch.com/2025/07/15/google-discover-adds-ai-summaries-threatening-publishers-with-further-traffic-declines/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-meta">
+                    <span class="news-source">AI News</span>
+                    <span class="news-date">Tue, 15 Jul 2025</span>
+                </div>
+                <h3>Military AI contracts awarded to Anthropic, OpenAI, Google, and xAI</h3>
+                <p><p>The Pentagon has opened the military AI floodgates and handed out contracts worth up to $800 million to four of the biggest names: Google, OpenAI, Anthropic, and Elon Musk&#8217;s xAI. Each company...</p>
+                <a href="https://www.artificialintelligence-news.com/news/military-ai-contracts-awarded-to-anthropic-openai-google-and-xai/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-meta">
+                    <span class="news-source">AI News</span>
+                    <span class="news-date">Tue, 15 Jul 2025</span>
+                </div>
+                <h3>How to use AI to start an online business</h3>
+                <p><p>Nearly every online business now touches artificial intelligence at some point. Research from 2025 shows 78% of companies worldwide use AI for at least one business area. Smaller businesses report ...</p>
+                <a href="https://www.artificialintelligence-news.com/news/how-to-use-ai-to-start-an-online-business/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-meta">
+                    <span class="news-source">AI News</span>
+                    <span class="news-date">Mon, 14 Jul 2025</span>
+                </div>
+                <h3>FDA’s draft guidance on AI/ML has startups on high alert</h3>
+                <p><p>Author, Eric Elsen, Forte Group. On January 7, 2025, the US Food and Drug Administration (FDA) released draft guidance titled &#8220;Artificial Intelligence and Machine Learning in Software as a Me...</p>
+                <a href="https://www.artificialintelligence-news.com/news/fdas-draft-guidance-on-ai-ml-has-startups-on-high-alert/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-meta">
+                    <span class="news-source">AI News</span>
+                    <span class="news-date">Fri, 11 Jul 2025</span>
+                </div>
+                <h3>AI is rewriting the rules of the insurance industry</h3>
+                <p><p>Despite its traditionally risk-averse nature, the insurance industry is being fundamentally reshaped by AI. AI has already become vital for the insurance industry, touching everything from complex ...</p>
+                <a href="https://www.artificialintelligence-news.com/news/ai-is-rewriting-the-rules-of-insurance-industry/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-meta">
+                    <span class="news-source">AI News</span>
+                    <span class="news-date">Fri, 11 Jul 2025</span>
+                </div>
+                <h3>IBM Power11 targets enterprise AI adoption with zero-downtime architecture</h3>
+                <p><p>IBM&#8217;s Power11 enterprise servers address a persistent challenge in enterprise computing: how to deploy AI workloads without compromising the rock-solid reliability that mission-critical appli...</p>
+                <a href="https://www.artificialintelligence-news.com/news/ibm-power11-enterprise-servers-zero-downtime-ai/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+        </div>
+        
+        <div class="footer">
+            <p>🔄 매일 오전 10시 자동 업데이트 | Made with Claude AI</p>
+        </div>
+    </div>
+    
+    <button class="refresh-btn" onclick="location.reload()">🔄</button>
+    
+    <script>
+        // 자동 새로고침 (30분마다)
+        setTimeout(function() {
+            location.reload();
+        }, 30 * 60 * 1000);
+    </script>
+</body>
+</html>
+        
