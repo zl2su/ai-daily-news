@@ -355,14 +355,10 @@ JSON 형식으로만 응답해주세요.
         # 뉴스 카드들 추가
         for article in articles:
             # 발행일 포맷팅
+            # 수정된 코드 (문제 해결)
             published_date = ""
             if article.get('published'):
-                try:
-                    date_obj = dateutil.parser.parse(article['published'])
-                    published_date = date_obj.strftime('%m/%d %H:%M')
-                except:
-                    published_date = article['published'][:10]
-            
+                published_date = article['published'][:16]  # 앞의 16글자만 사용
             html_content += f"""
             <div class="news-card">
                 <div class="news-meta">
