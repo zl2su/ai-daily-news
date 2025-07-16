@@ -21,7 +21,7 @@ jobs:
         pip install requests feedparser python-dateutil
     
     - name: Generate news page
-      run: python generate_news.py
+      run: python gen_news.py
       env:
         CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
     
