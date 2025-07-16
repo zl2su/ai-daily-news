@@ -2,7 +2,7 @@ import requests
 import feedparser
 import json
 import os
-import time
+import time # 수정완료
 
 class AINewsWebGenerator:
     def __init__(self):
