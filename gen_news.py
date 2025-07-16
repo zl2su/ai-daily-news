@@ -3,6 +3,7 @@ import feedparser
 import json
 from datetime import datetime
 import os
+import dateutil.parser
 
 class AINewsWebGenerator:
     def __init__(self):
@@ -357,8 +358,6 @@ JSON 형식으로만 응답해주세요.
             published_date = ""
             if article.get('published'):
                 try:
-                    from datetime import datetime
-                    import dateutil.parser
                     date_obj = dateutil.parser.parse(article['published'])
                     published_date = date_obj.strftime('%m/%d %H:%M')
                 except:
