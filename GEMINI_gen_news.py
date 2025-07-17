@@ -18,25 +18,103 @@ class AINewsWebGenerator:
         ]
     
     def collect_news(self):
-        """최신 AI 뉴스 수집"""
+        """최신 AI 뉴스 수집(유연한 날짜 필터링-> 48시간 이내)"""
+        from datetime import datetime, timedelta
+        
         all_articles = []
+        now = datetime.now()
+
+        # 1차: 24시간 이내 뉴스 수집
+        yesterday = now - timedelta(days=1)
+        two_days_ago = now - timedelta(days=2)
+
+        print(f"🕐 우선 {yesterday.strftime('%Y-%m-%d %H:%M')} 이후 뉴스를 수집")
+
+        # 더 많은 AI 뉴스 소스 추가
+        extended_sources = [
+            'https://feeds.feedburner.com/venturebeat/SZYF',
+            'https://techcrunch.com/category/artificial-intelligence/feed/',
+            'https://www.artificialintelligence-news.com/feed/',
+            'https://www.theverge.com/ai-artificial-intelligence/rss/index.xml',
+            'https://rss.cnn.com/rss/edition.rss',  # CNN 전체 (AI 뉴스 포함)
+            'https://feeds.reuters.com/reuters/technologyNews',  # 로이터 기술
+            'https://www.wired.com/feed/category/gear/artificial-intelligence/latest/rss',  # Wired AI
+            'https://techxplore.com/rss-feed/technology-news/',  # TechXplore
+            'https://www.sciencedaily.com/rss/computers_math/artificial_intelligence.xml',  # Science Daily AI
+            'https://news.mit.edu/rss/topic/artificial-intelligence2'  # MIT AI 뉴스
+        ]
+
+        recent_articles = [] # 24시간 이내
+        older_articles = [] # 48시간 이내
         
         for source in self.news_sources:
             try:
+                print(f"📡 {source}에서 뉴스 수집 중...")
                 feed = feedparser.parse(source)
-                for entry in feed.entries[:10]:  # 각 소스에서 최신 5개씩
-                    article = {
-                        'title': entry.title,
-                        'summary': entry.summary if hasattr(entry, 'summary') else entry.description if hasattr(entry, 'description') else '',
-                        'link': entry.link,
-                        'published': entry.published if hasattr(entry, 'published') else '',
-                        'source': feed.feed.title if hasattr(feed.feed, 'title') else source
-                    }
-                    all_articles.append(article)
-            except Exception as e:
-                print(f"Error fetching from {source}: {e}")
                 
-        return all_articles[:10]  # 최대 5개 기사
+                # 각 소스에서 최신 20개씩
+                for entry in feed.entries[:20]:
+                    # 날짜 파싱
+                    article_data = None
+                    if hasattr(entry, 'published_parsed') and entry.published_parsed:
+                        try:
+                            article_date = datetime(*entry.published_parsed[:6])
+                        except:
+                            pass
+                    elif hasattr(entry, 'published') and entry.published:
+                        try:
+                            from dateutil import parser
+                            article_date = parser.parse(entry.published)
+                            # 시간대 정보 제거 
+                            if article_date.tzinfo:
+                                article_date = article_date.replace(tzinfo=None)
+                        except:
+                            pass
+                 
+                    article = {
+                         'title': entry.title,
+                         'summary': entry.summary if hasattr(entry, 'summary') else entry.description if hasattr(entry, 'description') else '',
+                          'link': entry.link,
+                         'published': entry.published if hasattr(entry, 'published') else '',
+                         'source': feed.feed.title if hasattr(feed.feed, 'title') else source
+                    }
+                    title_lower = article['title'].lower()
+                    summary_lower = article['summary'].lower()
+                    
+                    if any(keyword in title_lower or keyword in summary_lower for keyword in ai_keywords):
+                        if article_date >= yesterday:
+                            recent_articles.append(article)
+                            print(f"✅ 최신 뉴스: {article['title'][:50]}...")
+                        elif article_date >= two_days_ago:
+                            older_articles.append(article)
+                            
+            except Exception as e:
+                print(f"❌ Error fetching from {source}: {e}")
+                
+        # 최신순으로 정렬
+        recent_articles.sort(key=lambda x: x.get('date_obj', now), reverse=True)
+        older_articles.sort(key=lambda x: x.get('date_obj', now), reverse=True)
+    
+        # 24시간 이내 뉴스가 충분하면 그것만 사용
+        if len(recent_articles) >= 10:
+            final_articles = recent_articles[:15]
+            print(f"📊 24시간 이내 AI 뉴스 {len(final_articles)}개 사용")
+        else:
+            # 부족하면 48시간 이내 뉴스도 추가
+            final_articles = recent_articles + older_articles[:15-len(recent_articles)]
+            print(f"📊 최신 뉴스 부족으로 48시간 이내 뉴스 포함: {len(final_articles)}개")
+    
+        # 중복 제거
+        seen_titles = set()
+        unique_articles = []
+        for article in final_articles:
+            title_key = article['title'].lower().strip()
+            if title_key not in seen_titles:
+                seen_titles.add(title_key)
+                unique_articles.append(article)
+                
+        print(f"🎯 최종 선택: {len(unique_articles)}개 뉴스")
+        return unique_articles[:15]
     
     def get_gemini_summary(self, articles):
         """Google Gemini API로 뉴스 요약"""
