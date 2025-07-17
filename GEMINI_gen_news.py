@@ -20,11 +20,28 @@ class AINewsWebGenerator:
     def collect_news(self):
         """최신 AI 뉴스 수집"""
         all_articles = []
-        
+
+        # 더 많은 AI 뉴스 소스 추가
+        extended_sources = [
+            'https://feeds.feedburner.com/venturebeat/SZYF',
+            'https://techcrunch.com/category/artificial-intelligence/feed/',
+            'https://www.artificialintelligence-news.com/feed/',
+            'https://www.theverge.com/ai-artificial-intelligence/rss/index.xml',
+            'https://rss.cnn.com/rss/edition.rss',  # CNN 전체 (AI 뉴스 포함)
+            'https://feeds.reuters.com/reuters/technologyNews',  # 로이터 기술
+            'https://www.wired.com/feed/category/gear/artificial-intelligence/latest/rss',  # Wired AI
+            'https://techxplore.com/rss-feed/technology-news/',  # TechXplore
+            'https://www.sciencedaily.com/rss/computers_math/artificial_intelligence.xml',  # Science Daily AI
+            'https://news.mit.edu/rss/topic/artificial-intelligence2'  # MIT AI 뉴스
+        ]
+            
         for source in self.news_sources:
             try:
+                print(f"📡 {source}에서 뉴스 수집 중...")
                 feed = feedparser.parse(source)
-                for entry in feed.entries[:10]:  # 각 소스에서 최신 5개씩
+                
+                # 각 소스에서 최신 10개씩
+                for entry in feed.entries[:10]:  
                     article = {
                         'title': entry.title,
                         'summary': entry.summary if hasattr(entry, 'summary') else entry.description if hasattr(entry, 'description') else '',
@@ -36,7 +53,27 @@ class AINewsWebGenerator:
             except Exception as e:
                 print(f"Error fetching from {source}: {e}")
                 
-        return all_articles[:10]  # 최대 5개 기사
+        # 날짜순으로 정렬(최신순)
+        def get_date_for_sorting(article):
+            try:
+                if article.get('published'):
+                    from dateutil import parser
+                    return parser.parse(article['published'])
+            except:
+                pass
+            return None
+        
+        # 날짜가 있는 기사들을 최신순으로 정렬
+        articles_with_date = [a for a in all_articles if get_date_for_sorting(a)]
+        articles_with_date.sort(key=get_date_for_sorting, reverse=True)
+        
+        # 날짜가 없는 기사들 추가
+        articles_without_date = [a for a in all_articles if not get_date_for_sorting(a)]
+        
+        final_articles = articles_with_date + articles_without_date
+        
+        print(f"📊 총 {len(final_articles)}개의 AI 뉴스를 수집했습니다")
+        return all_articles[:20]  # 최대 20개 기사
     
     def get_gemini_summary(self, articles):
         """Google Gemini API로 뉴스 요약"""
