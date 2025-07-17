@@ -23,7 +23,7 @@ jobs:
     - name: Generate news page
       run: python GEMINI_gen_news.py
       env:
-        CLAUDE_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
     
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3 # HTML 파일들을 gh-pages 브랜치에 푸시하는 역할
