@@ -1,4 +1,4 @@
-# AI 뉴스 생성기 #
+# AI 뉴스 생성기 - Gemini 버전 #
 import requests
 import feedparser
 import json
@@ -7,7 +7,7 @@ import time
 
 class AINewsWebGenerator:
     def __init__(self):
-        self.gemini_api_key = os.getenv('GEMINI_API_KEY')  # 변경!
+        self.gemini_api_key = os.getenv('GEMINI_API_KEY')
         
         # AI 뉴스 RSS 피드들
         self.news_sources = [
@@ -24,7 +24,7 @@ class AINewsWebGenerator:
         for source in self.news_sources:
             try:
                 feed = feedparser.parse(source)
-                for entry in feed.entries[:5]:  # 각 소스에서 최신 5개씩
+                for entry in feed.entries[:10]:  # 각 소스에서 최신 5개씩
                     article = {
                         'title': entry.title,
                         'summary': entry.summary if hasattr(entry, 'summary') else entry.description if hasattr(entry, 'description') else '',
@@ -36,14 +36,13 @@ class AINewsWebGenerator:
             except Exception as e:
                 print(f"Error fetching from {source}: {e}")
                 
-        return all_articles[:5]  # 최대 5개 기사
+        return all_articles[:10]  # 최대 5개 기사
     
-    def get_gemini_summary(self, articles):  # 들여쓰기 수정!
+    def get_gemini_summary(self, articles):
         """Google Gemini API로 뉴스 요약"""
-        gemini_api_key = self.gemini_api_key  # 변경!
-        print(f"📊 Gemini API 키 확인: {'설정됨' if gemini_api_key else '설정 안됨'}")
+        print(f"📊 Gemini API 키 확인: {'설정됨' if self.gemini_api_key else '설정 안됨'}")
     
-        if not gemini_api_key:
+        if not self.gemini_api_key:
             print("❌ GEMINI_API_KEY가 설정되지 않았습니다!")
             return None
             
@@ -55,21 +54,22 @@ class AINewsWebGenerator:
             articles_text += f"   출처: {article['source']}\n\n"
         
         prompt = f"""
-다음 AI 뉴스들을 분석해서 한국어로 요약해주세요:
+다음 AI 뉴스들을 분석하여 JSON으로만 응답하세요. 다른 설명이나 텍스트는 포함하지 마세요.
 
+뉴스 목록:
 {articles_text}
 
-다음 형식으로 JSON 응답해주세요:
+응답 형식 (JSON만):
 {{
-  "today_summary": "오늘의 AI 뉴스 한줄 요약",
-  "key_trends": ["주요 트렌드1", "주요 트렌드2", "주요 트렌드3"],
-  "market_insight": "AI 시장 동향 분석 (2-3문장)"
+  "today_summary": "한줄 요약",
+  "key_trends": ["트렌드1", "트렌드2", "트렌드3"],
+  "market_insight": "시장 분석"
 }}
 
-JSON 형식으로만 응답해주세요.
+위 JSON 형식으로만 응답하세요. 다른 텍스트는 절대 포함하지 마세요.
         """
         
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={gemini_api_key}"
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={self.gemini_api_key}"
         
         headers = {
             'Content-Type': 'application/json',
@@ -95,12 +95,27 @@ JSON 형식으로만 응답해주세요.
                 
                 if 'candidates' in result and len(result['candidates']) > 0:
                     content = result['candidates'][0]['content']['parts'][0]['text']
-                    print(f"📝 API 응답 내용 미리보기: {content[:200]}...")
+                    print(f"📝 API 응답 내용 전체: {content}")
                     
                     try:
-                        parsed_data = json.loads(content)
-                        print("✅ JSON 파싱 성공!")
-                        return parsed_data
+                        # JSON 부분만 추출 시도
+                        start = content.find('{')
+                        end = content.rfind('}') + 1
+                        
+                        if start != -1 and end > start:
+                            json_part = content[start:end]
+                            print(f"🔍 추출된 JSON: {json_part}")
+                            parsed_data = json.loads(json_part)
+                            print("✅ JSON 파싱 성공!")
+                            return parsed_data
+                        else:
+                            print("❌ JSON 형식을 찾을 수 없습니다")
+                            return {
+                                "today_summary": "JSON 파싱 실패로 인한 기본값",
+                                "key_trends": ["파싱", "실패"],
+                                "market_insight": "API 응답을 JSON으로 파싱할 수 없습니다."
+                            }
+                            
                     except Exception as e:
                         print(f"❌ JSON 파싱 실패: {e}")
                         print(f"🔍 원본 응답: {content}")
