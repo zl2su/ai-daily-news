@@ -24,7 +24,7 @@ class AINewsWebGenerator:
         for source in self.news_sources:
             try:
                 feed = feedparser.parse(source)
-                for entry in feed.entries[:5]:  # 각 소스에서 최신 5개씩
+                for entry in feed.entries[:10]:  # 각 소스에서 최신 5개씩
                     article = {
                         'title': entry.title,
                         'summary': entry.summary if hasattr(entry, 'summary') else entry.description if hasattr(entry, 'description') else '',
@@ -36,7 +36,7 @@ class AINewsWebGenerator:
             except Exception as e:
                 print(f"Error fetching from {source}: {e}")
                 
-        return all_articles[:5]  # 최대 5개 기사
+        return all_articles[:10]  # 최대 5개 기사
     
     def get_gemini_summary(self, articles):
         """Google Gemini API로 뉴스 요약"""
