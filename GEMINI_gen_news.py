@@ -39,22 +39,22 @@ class AINewsWebGenerator:
         return all_articles[:5]  # 최대 5개 기사
         
     def get_gemini_summary(self, articles):
-    """Google Gemini API로 뉴스 요약"""
-    gemini_api_key = os.getenv('GEMINI_API_KEY')
-    print(f"📊 Gemini API 키 확인: {'설정됨' if gemini_api_key else '설정 안됨'}")
-
-    if not gemini_api_key:
-        print("❌ GEMINI_API_KEY가 설정되지 않았습니다!")
-        return None
-        
-    articles_text = ""
-    for i, article in enumerate(articles, 1):
-        articles_text += f"{i}. {article['title']}\n"
-        if article['summary']:
-            articles_text += f"   {article['summary'][:100]}...\n"
-        articles_text += f"   출처: {article['source']}\n\n"
+        """Google Gemini API로 뉴스 요약"""
+        gemini_api_key = os.getenv('GEMINI_API_KEY')
+        print(f"📊 Gemini API 키 확인: {'설정됨' if gemini_api_key else '설정 안됨'}")
     
-    prompt = f"""
+        if not gemini_api_key:
+            print("❌ GEMINI_API_KEY가 설정되지 않았습니다!")
+            return None
+            
+        articles_text = ""
+        for i, article in enumerate(articles, 1):
+            articles_text += f"{i}. {article['title']}\n"
+            if article['summary']:
+                articles_text += f"   {article['summary'][:100]}...\n"
+            articles_text += f"   출처: {article['source']}\n\n"
+        
+        prompt = f"""
 다음 AI 뉴스들을 분석해서 한국어로 요약해주세요:
 
 {articles_text}
