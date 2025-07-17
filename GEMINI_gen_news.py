@@ -46,6 +46,7 @@ class AINewsWebGenerator:
 
         recent_articles = [] # 24시간 이내
         older_articles = [] # 48시간 이내
+        no_date_articles = [] 
         
         for source in self.news_sources:
             try:
@@ -87,6 +88,10 @@ class AINewsWebGenerator:
                             print(f"✅ 최신 뉴스: {article['title'][:50]}...")
                         elif article_date >= two_days_ago:
                             older_articles.append(article)
+                            print(f"🔄 이전 뉴스 (48h): {article['title'][:50]}...")
+                        else:
+                            no_date_articles.append(article)
+                            print(f"📅 날짜 미상: {article['title'][:50]}...")
                             
             except Exception as e:
                 print(f"❌ Error fetching from {source}: {e}")
@@ -100,9 +105,14 @@ class AINewsWebGenerator:
             final_articles = recent_articles[:15]
             print(f"📊 24시간 이내 AI 뉴스 {len(final_articles)}개 사용")
         else:
-            # 부족하면 48시간 이내 뉴스도 추가
-            final_articles = recent_articles + older_articles[:15-len(recent_articles)]
-            print(f"📊 최신 뉴스 부족으로 48시간 이내 뉴스 포함: {len(final_articles)}개")
+            needed_count = 15 - len(recent_articles)
+            final_articles = recent_articles + older_articles[:needed_count]
+            print(f"📊 24시간 뉴스 부족 → 48시간 이내 뉴스 추가: 총 {len(final_articles)}개")
+        
+            if len(final_articles) < 10:
+                still_needed = 10 - len(final_articles)
+                final_articles.extend(no_date_articles[:still_needed])
+                print(f"📊 여전히 부족 → 날짜 미상 뉴스 추가: 총 {len(final_articles)}개")
     
         # 중복 제거
         seen_titles = set()
