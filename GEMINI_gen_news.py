@@ -7,7 +7,7 @@ import time
 
 class AINewsWebGenerator:
     def __init__(self):
-        self.claude_api_key = os.getenv('CLAUDE_API_KEY')
+        self.gemini_api_key = os.getenv('GEMINI_API_KEY')  # 변경!
         
         # AI 뉴스 RSS 피드들
         self.news_sources = [
@@ -37,24 +37,24 @@ class AINewsWebGenerator:
                 print(f"Error fetching from {source}: {e}")
                 
         return all_articles[:5]  # 최대 5개 기사
-        
-        def get_gemini_summary(self, articles):
-            """Google Gemini API로 뉴스 요약"""
-            gemini_api_key = os.getenv('GEMINI_API_KEY')
-            print(f"📊 Gemini API 키 확인: {'설정됨' if gemini_api_key else '설정 안됨'}")
-        
-            if not gemini_api_key:
-                print("❌ GEMINI_API_KEY가 설정되지 않았습니다!")
-                return None
-                
-            articles_text = ""
-            for i, article in enumerate(articles, 1):
-                articles_text += f"{i}. {article['title']}\n"
-                if article['summary']:
-                    articles_text += f"   {article['summary'][:100]}...\n"
-                articles_text += f"   출처: {article['source']}\n\n"
+    
+    def get_gemini_summary(self, articles):  # 들여쓰기 수정!
+        """Google Gemini API로 뉴스 요약"""
+        gemini_api_key = self.gemini_api_key  # 변경!
+        print(f"📊 Gemini API 키 확인: {'설정됨' if gemini_api_key else '설정 안됨'}")
+    
+        if not gemini_api_key:
+            print("❌ GEMINI_API_KEY가 설정되지 않았습니다!")
+            return None
             
-            prompt = f"""
+        articles_text = ""
+        for i, article in enumerate(articles, 1):
+            articles_text += f"{i}. {article['title']}\n"
+            if article['summary']:
+                articles_text += f"   {article['summary'][:100]}...\n"
+            articles_text += f"   출처: {article['source']}\n\n"
+        
+        prompt = f"""
 다음 AI 뉴스들을 분석해서 한국어로 요약해주세요:
 
 {articles_text}
@@ -67,68 +67,66 @@ class AINewsWebGenerator:
 }}
 
 JSON 형식으로만 응답해주세요.
-    """
-    
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={gemini_api_key}"
-    
-    headers = {
-        'Content-Type': 'application/json',
-    }
-    
-    data = {
-        "contents": [{
-            "parts": [{
-                "text": prompt
+        """
+        
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={gemini_api_key}"
+        
+        headers = {
+            'Content-Type': 'application/json',
+        }
+        
+        data = {
+            "contents": [{
+                "parts": [{
+                    "text": prompt
+                }]
             }]
-        }]
-    }
-    
-    try:
-        print("🔄 Gemini API 호출 시작...")
-        response = requests.post(url, headers=headers, json=data, timeout=30)
+        }
         
-        print(f"📡 API 응답 상태: {response.status_code}")
-        
-        if response.status_code == 200:
-            print("✅ API 호출 성공!")
-            result = response.json()
+        try:
+            print("🔄 Gemini API 호출 시작...")
+            response = requests.post(url, headers=headers, json=data, timeout=30)
             
-            if 'candidates' in result and len(result['candidates']) > 0:
-                content = result['candidates'][0]['content']['parts'][0]['text']
-                print(f"📝 API 응답 내용 미리보기: {content[:200]}...")
+            print(f"📡 API 응답 상태: {response.status_code}")
+            
+            if response.status_code == 200:
+                print("✅ API 호출 성공!")
+                result = response.json()
                 
-                try:
-                    parsed_data = json.loads(content)
-                    print("✅ JSON 파싱 성공!")
-                    return parsed_data
+                if 'candidates' in result and len(result['candidates']) > 0:
+                    content = result['candidates'][0]['content']['parts'][0]['text']
+                    print(f"📝 API 응답 내용 미리보기: {content[:200]}...")
                     
-                except Exception as e:
-                    print(f"❌ JSON 파싱 실패: {e}")
-                    print(f"🔍 원본 응답: {content}")
-                    return {
-                        "today_summary": "AI 뉴스 요약 처리 중 오류 발생",
-                        "key_trends": ["데이터 처리 중"],
-                        "market_insight": "시장 분석 준비 중입니다."
-                    }
+                    try:
+                        parsed_data = json.loads(content)
+                        print("✅ JSON 파싱 성공!")
+                        return parsed_data
+                    except Exception as e:
+                        print(f"❌ JSON 파싱 실패: {e}")
+                        print(f"🔍 원본 응답: {content}")
+                        return {
+                            "today_summary": "AI 뉴스 요약 처리 중 오류 발생",
+                            "key_trends": ["데이터 처리 중"],
+                            "market_insight": "시장 분석 준비 중입니다."
+                        }
+                else:
+                    print("❌ API 응답에 content가 없습니다")
+                    print(f"🔍 전체 응답: {result}")
+                    return None
             else:
-                print("❌ API 응답에 content가 없습니다")
-                print(f"🔍 전체 응답: {result}")
+                print(f"❌ API 호출 실패: {response.status_code}")
+                print(f"🔍 응답 내용: {response.text}")
                 return None
-        else:
-            print(f"❌ API 호출 실패: {response.status_code}")
-            print(f"🔍 응답 내용: {response.text}")
-            return None
 
-    except Exception as e:
-        print(f"❌ Gemini API 오류: {e}")
-        return None
+        except Exception as e:
+            print(f"❌ Gemini API 오류: {e}")
+            return None
     
     def generate_html(self, articles, summary_data):
         """HTML 웹페이지 생성"""
         current_time = time.strftime('%Y년 %m월 %d일 %H시 %M분')
         
         html_content = f"""
-        
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -372,7 +370,6 @@ JSON 형식으로만 응답해주세요.
         # 뉴스 카드들 추가
         for article in articles:
             # 발행일 포맷팅
-            # 수정된 코드 (문제 해결)
             published_date = ""
             if article.get('published'):
                 published_date = article['published'][:16]  # 앞의 16글자만 사용
@@ -392,7 +389,7 @@ JSON 형식으로만 응답해주세요.
         </div>
         
         <div class="footer">
-            <p>🔄 매일 오전 10시 자동 업데이트 | Made with Claude AI</p>
+            <p>🔄 매일 오전 10시 자동 업데이트 | Made with Gemini AI</p>
         </div>
     </div>
     
@@ -430,16 +427,15 @@ JSON 형식으로만 응답해주세요.
         
         print(f"✅ {len(articles)}개 뉴스 수집 완료")
         
-        # 2. GEMINI 요약
-        print("🤖 GEMINI AI 분석 중...")
+        # 2. Gemini 요약
+        print("🤖 Gemini AI 분석 중...")
         summary_data = self.get_gemini_summary(articles)
         
         if not summary_data:
             summary_data = {
                 "today_summary": "오늘의 AI 뉴스를 분석하고 있습니다.",
                 "key_trends": ["인공지능", "머신러닝", "딥러닝"],
-                "market_insight": "AI 기술이 빠르게 발전하고 있습니다.",
-                "tech_highlights": ["새로운 AI 모델", "기술 혁신"]
+                "market_insight": "AI 기술이 빠르게 발전하고 있습니다."
             }
         
         # 3. HTML 생성
@@ -455,4 +451,3 @@ JSON 형식으로만 응답해주세요.
 if __name__ == "__main__":
     generator = AINewsWebGenerator()
     generator.run()
-
