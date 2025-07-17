@@ -83,7 +83,7 @@ class AINewsWebGenerator:
                     
                     if any(keyword in title_lower or keyword in summary_lower for keyword in ai_keywords):
                         if article_date >= yesterday:
-                             recent_articles.append(article)
+                            recent_articles.append(article)
                             print(f"✅ 최신 뉴스: {article['title'][:50]}...")
                         elif article_date >= two_days_ago:
                             older_articles.append(article)
