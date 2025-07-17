@@ -36,7 +36,7 @@ class AINewsWebGenerator:
             except Exception as e:
                 print(f"Error fetching from {source}: {e}")
                 
-        return all_articles[:10]  # 최대 15개 기사
+        return all_articles[:5]  # 최대 5개 기사
     
     def get_claude_summary(self, articles):
         """클로드 API로 뉴스 요약"""
@@ -50,7 +50,7 @@ class AINewsWebGenerator:
         for i, article in enumerate(articles, 1):
             articles_text += f"{i}. {article['title']}\n"
             if article['summary']:
-                articles_text += f"   {article['summary'][:150]}...\n"
+                articles_text += f"   {article['summary'][:100]}...\n"
             articles_text += f"   출처: {article['source']}\n"
             articles_text += f"   링크: {article['link']}\n\n"
         
@@ -77,7 +77,7 @@ JSON 형식으로만 응답해주세요.
         
         data = {
             'model': 'claude-sonnet-4-20250514',
-            'max_tokens': 400,
+            'max_tokens': 200,
             'messages': [
                 {
                     'role': 'user',
