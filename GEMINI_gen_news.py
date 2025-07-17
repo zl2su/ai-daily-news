@@ -20,10 +20,9 @@ class AINewsWebGenerator:
     def collect_news(self):
         """최신 AI 뉴스 수집(유연한 날짜 필터링-> 48시간 이내)"""
         from datetime import datetime, timedelta
-        import pytz
         
         all_articles = []
-        now = datetime.now(pytz.UTC)
+        now = datetime.now()
 
         # 1차: 24시간 이내 뉴스 수집
         yesterday = now - timedelta(days=1)
@@ -47,6 +46,7 @@ class AINewsWebGenerator:
 
         recent_articles = [] # 24시간 이내
         older_articles = [] # 48시간 이내
+        
         for source in self.news_sources:
             try:
                 print(f"📡 {source}에서 뉴스 수집 중...")
@@ -58,34 +58,35 @@ class AINewsWebGenerator:
                     article_data = None
                     if hasattr(entry, 'published_parsed') and entry.published_parsed:
                         try:
-                            article_date = datetime(*entry.published_parsed[:6], tzinfo=pytz.UTC)
+                            article_date = datetime(*entry.published_parsed[:6])
                         except:
                             pass
                     elif hasattr(entry, 'published') and entry.published:
                         try:
                             from dateutil import parser
                             article_date = parser.parse(entry.published)
-                            if article_date.tzinfo is None:
-                                article_date = article_date.replace(tzinfo=pytz.UTC)
+                            # 시간대 정보 제거 
+                            if article_date.tzinfo:
+                                article_date = article_date.replace(tzinfo=None)
                         except:
                             pass
-                    if article_data: 
-                        article = {
-                            'title': entry.title,
-                            'summary': entry.summary if hasattr(entry, 'summary') else entry.description if hasattr(entry, 'description') else '',
-                            'link': entry.link,
-                            'published': entry.published if hasattr(entry, 'published') else '',
-                            'source': feed.feed.title if hasattr(feed.feed, 'title') else source
-                        }
-                        title_lower = article['title'].lower()
-                        summary_lower = article['summary'].lower()
+                 
+                    article = {
+                         'title': entry.title,
+                         'summary': entry.summary if hasattr(entry, 'summary') else entry.description if hasattr(entry, 'description') else '',
+                          'link': entry.link,
+                         'published': entry.published if hasattr(entry, 'published') else '',
+                         'source': feed.feed.title if hasattr(feed.feed, 'title') else source
+                    }
+                    title_lower = article['title'].lower()
+                    summary_lower = article['summary'].lower()
                     
-                        if any(keyword in title_lower or keyword in summary_lower for keyword in ai_keywords):
-                            if article_date >= yesterday:
-                                recent_articles.append(article)
-                                print(f"✅ 최신 뉴스: {article['title'][:50]}...")
-                            elif article_date >= two_days_ago:
-                                older_articles.append(article)
+                    if any(keyword in title_lower or keyword in summary_lower for keyword in ai_keywords):
+                        if article_date >= yesterday:
+                             recent_articles.append(article)
+                            print(f"✅ 최신 뉴스: {article['title'][:50]}...")
+                        elif article_date >= two_days_ago:
+                            older_articles.append(article)
             except Exception as e:
                 print(f"❌ Error fetching from {source}: {e}")
                 
@@ -110,7 +111,8 @@ class AINewsWebGenerator:
             if title_key not in seen_titles:
                 seen_titles.add(title_key)
                 unique_articles.append(article)
-        
+                
+        print(f"🎯 최종 선택: {len(unique_articles)}개 뉴스")
         return unique_articles[:15]
     
     def get_gemini_summary(self, articles):
