@@ -87,6 +87,7 @@ class AINewsWebGenerator:
                             print(f"✅ 최신 뉴스: {article['title'][:50]}...")
                         elif article_date >= two_days_ago:
                             older_articles.append(article)
+                            
             except Exception as e:
                 print(f"❌ Error fetching from {source}: {e}")
                 
