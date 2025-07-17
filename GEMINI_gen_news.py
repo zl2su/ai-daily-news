@@ -101,6 +101,7 @@ JSON 형식으로만 응답해주세요.
                     parsed_data = json.loads(content)
                     print("✅ JSON 파싱 성공!")
                     return parsed_data
+                    
                 except Exception as e:
                     print(f"❌ JSON 파싱 실패: {e}")
                     print(f"🔍 원본 응답: {content}")
