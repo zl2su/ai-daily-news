@@ -66,7 +66,7 @@ class AINewsWebGenerator:
                             from dateutil import parser
                             article_date = parser.parse(entry.published)
                             if article_date.tzinfo is None:
-                            article_date = article_date.replace(tzinfo=pytz.UTC)
+                                article_date = article_date.replace(tzinfo=pytz.UTC)
                         except:
                             pass
                     if article_data: 
