@@ -148,7 +148,11 @@ class AINewsWebGenerator:
             'platform', 'software', 'users', 'user', 'feature', 'features', 
             # 의미없는 AI 관련 단어들
             'chat', 'tool', 'launch', 'update', 'data', 'tech', 'digital', 
-            'model', 'intelligence', 'artificial', 'machine', 'learning'
+            'model', 'intelligence', 'artificial', 'machine', 'learning',
+            # 문제가 되는 단어들 추가
+            'com', 'you', 'deep', 'search', 'agent', 'voice', 'chatgpt',
+            'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
+            'out', 'over', 'back', 'down', 'only', 'think', 'come', 'its', 'any'
         }
         
         # 특별 키워드 (새로운 AI 도구/회사들)
@@ -164,15 +168,20 @@ class AINewsWebGenerator:
         for word in set(capitalized_words):
             if word.lower() not in stop_words and len(word) >= 3:
                 auto_keywords.append(word)
+        print(f"🔍 stop_words 샘플: {list(stop_words)[:10]}")
+
         
         # 일반 단어들 중 빈도 높은 것들
         word_freq = Counter([word for word in regular_words 
-                            if word not in stop_words and len(word) >= 4])
-        
+                            if word not in stop_words and len(word) >= 3])
+        print(f"🔍 word_freq 상위 10개: {dict(word_freq.most_common(10))}")
+
         # 빈도 5회 이상인 단어들 선택 (특별 키워드는 3회도 허용)
         for word, freq in word_freq.items():
             if freq >= 4 or (freq >= 2 and word.lower() in special_keywords):
                 auto_keywords.append(word.title())
+                print(f"  ✅ 키워드 추가: {word.title()} ({freq}회)")
+
         
         # 전체 키워드 통합
         all_keywords = core_keywords + auto_keywords
