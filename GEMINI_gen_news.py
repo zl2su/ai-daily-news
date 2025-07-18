@@ -134,8 +134,8 @@ class AINewsWebGenerator:
         # 일반 단어들
         regular_words = re.findall(r'\b[a-z]{3,15}\b', all_text)
         
-        # 대폭 강화된 불용어 리스트
-        enhanced_stop_words = {
+        # 불용어 리스트
+        stop_words = {
             # 기본 불용어
             'the', 'and', 'for', 'are', 'with', 'this', 'that', 'from', 'new', 
             'will', 'can', 'said', 'more', 'about', 'than', 'also', 'have', 
