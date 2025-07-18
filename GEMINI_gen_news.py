@@ -132,7 +132,7 @@ class AINewsWebGenerator:
         capitalized_words = re.findall(r'\b[A-Z][a-z]{2,15}\b', all_text.title())
         
         # 일반 단어들
-        regular_words = re.findall(r'\b[a-z]{5,15}\b', all_text)
+        regular_words = re.findall(r'\b[a-z]{4,15}\b', all_text)
         
         # 대폭 강화된 불용어 리스트
         enhanced_stop_words = {
@@ -145,19 +145,7 @@ class AINewsWebGenerator:
             'last', 'next', 'use', 'used', 'using', 'make', 'made', 'get',
             'year', 'time', 'work', 'way', 'company', 'technology', 'system',
             'report', 'study', 'research', 'development', 'application', 'service',
-            'platform', 'software', 'users', 'user', 'feature', 'features',
-            
-            # AI 관련 일반적인 단어들
-            'chat', 'deep', 'agent', 'tool', 'voice', 'launch', 'update',
-            'model', 'data', 'tech', 'digital', 'smart', 'machine', 'learning',
-            'network', 'intelligence', 'artificial', 'computer', 'algorithm',
-            'analysis', 'training', 'performance', 'business', 'industry',
-            'market', 'global', 'future', 'innovation', 'solutions', 'advanced',
-            
-            # 동작 관련 단어들
-            'create', 'build', 'develop', 'design', 'improve', 'enhance',
-            'provide', 'offer', 'deliver', 'enable', 'support', 'help',
-            'allows', 'makes', 'gives', 'brings', 'shows', 'demonstrates'
+            'platform', 'software', 'users', 'user', 'feature', 'features'
         }
         
         # 특별 키워드 (새로운 AI 도구/회사들)
@@ -180,7 +168,7 @@ class AINewsWebGenerator:
         
         # 빈도 5회 이상인 단어들 선택 (특별 키워드는 3회도 허용)
         for word, freq in word_freq.items():
-            if freq >= 7 or (freq >= 5 and word.lower() in special_keywords):
+            if freq >= 5 or (freq >= 3 and word.lower() in special_keywords):
                 auto_keywords.append(word.title())
         
         # 전체 키워드 통합
