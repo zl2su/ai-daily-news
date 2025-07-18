@@ -140,8 +140,8 @@ class AINewsWebGenerator:
             'will', 'can', 'said', 'more', 'about', 'than', 'also', 'have',
             'when', 'where', 'what', 'how', 'why', 'who', 'which',
             'been', 'they', 'their', 'would', 'could', 'should', 'much',
-            # 웹 관련 + 분리된 단어들 + 문제 단어들
-            'href', 'https', 'www', 'http', 'html', 'com', 'You'
+            # 웹 관련 + 분리된 단어들 + 문제 단어들 (모두 소문자)
+            'href', 'https', 'www', 'http', 'html', 'com', 'you',
             'chat', 'gpt', 'machine', 'learning', 'deep', 'artificial',
             'new', 'search', 'agent', 'news', 'research', 'its', 'openai'
         }
@@ -401,6 +401,10 @@ class AINewsWebGenerator:
       "기업명과 구체적 행동 내용 포함"
     ]
   }},
+  "focus_areas": [
+    "뉴스에서 실제 언급된 주목할 만한 기술이나 영역",
+    "구체적 기술 이름이나 시장 영역"
+  ],
   "technology_watch": [
     "뉴스에서 실제 언급된 기술명만",
     "구체적 기술 이름이나 제품명"
@@ -482,6 +486,7 @@ class AINewsWebGenerator:
                 "risks": ["분석 진행 중"],
                 "competitive_moves": ["기업 동향 분석 중"]
             },
+            "focus_areas": ["분석 중"],
             "technology_watch": ["분석 중"]
         }
     
@@ -491,14 +496,13 @@ class AINewsWebGenerator:
         opportunities = business_impact.get('opportunities', [])
         risks = business_impact.get('risks', [])
         competitive_moves = business_impact.get('competitive_moves', [])
-        recommendations = summary_data.get('strategic_recommendations', [])
-        investment_focus = summary_data.get('investment_focus', [])
+        focus_areas = summary_data.get('focus_areas', [])
         technology_watch = summary_data.get('technology_watch', [])
         
         executive_html = f"""
         <div class="executive-section">
             <div class="executive-header">
-                <h2>🎯 임원 보고서</h2>
+                <h2>📊 보고</h2>
                 <div class="executive-summary-card">
                     <h3>📋 Executive Summary</h3>
                     <p class="executive-summary-text">{summary_data.get('executive_summary', '임원 요약 준비 중입니다.')}</p>
@@ -528,34 +532,11 @@ class AINewsWebGenerator:
                 </div>
             </div>
             
-            <div class="recommendations-section">
-                <h3>📈 전략적 권장사항</h3>
-                <div class="recommendations-grid">
-        """
-        
-        # 권장사항을 우선순위별로 정렬
-        priority_order = {'High': 1, 'Medium': 2, 'Low': 3}
-        sorted_recommendations = sorted(recommendations, key=lambda x: priority_order.get(x.get('priority', 'Medium'), 2))
-        
-        for rec in sorted_recommendations:
-            priority_class = rec.get('priority', 'Medium').lower()
-            executive_html += f"""
-                    <div class="recommendation-card {priority_class}">
-                        <div class="rec-priority">{rec.get('priority', 'Medium')}</div>
-                        <div class="rec-action">{rec.get('action', '')}</div>
-                        <div class="rec-timeline">⏱️ {rec.get('timeline', '')}</div>
-                    </div>
-            """
-        
-        executive_html += f"""
-                </div>
-            </div>
-            
             <div class="focus-areas">
                 <div class="focus-card">
-                    <h3>💰 투자 검토 영역</h3>
+                    <h3>📈 주목 영역</h3>
                     <div class="focus-tags">
-                        {''.join([f'<span class="focus-tag investment">{focus}</span>' for focus in investment_focus])}
+                        {''.join([f'<span class="focus-tag investment">{focus}</span>' for focus in focus_areas])}
                     </div>
                 </div>
                 
@@ -1260,3 +1241,4 @@ class AINewsWebGenerator:
 if __name__ == "__main__":
     generator = AINewsWebGenerator()
     generator.run()
+            
