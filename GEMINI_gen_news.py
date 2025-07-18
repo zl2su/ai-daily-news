@@ -121,7 +121,7 @@ class AINewsWebGenerator:
             summary = article.get('summary', '').lower()
             all_text += f" {title} {summary}"
         
-        # 최소한의 핵심 키워드만 (10개)
+        # 기술/응용 분야 중심 핵심 키워드
         core_keywords = [
             'autonomous', 'medical', 'healthcare', 'education', 
             'coding', 'robotics', 'vision', 'voice', 'multimodal'
@@ -144,8 +144,7 @@ class AINewsWebGenerator:
             'last', 'next', 'use', 'used', 'using', 'make', 'made', 'get',
             'year', 'time', 'work', 'way', 'company', 'technology', 'system',
             'report', 'study', 'research', 'development', 'application', 'service',
-            'platform', 'software', 'users', 'user', 'feature', 'features', 'com',
-            'search', 'You'
+            'platform', 'software', 'users', 'user', 'feature', 'features'
         }
         
         # 특별 키워드 (새로운 AI 도구/회사들)
@@ -166,7 +165,7 @@ class AINewsWebGenerator:
         word_freq = Counter([word for word in regular_words 
                             if word not in stop_words and len(word) >= 4])
         
-        # 빈도 3회 이상인 단어들 선택 (특별 키워드는 2회도 허용)
+        # 빈도 5회 이상인 단어들 선택 (특별 키워드는 3회도 허용)
         for word, freq in word_freq.items():
             if freq >= 5 or (freq >= 3 and word.lower() in special_keywords):
                 auto_keywords.append(word.title())
