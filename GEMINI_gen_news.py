@@ -136,6 +136,17 @@ class AINewsWebGenerator:
         """키워드 트렌드 분석 (NEW, HOT, RISING)"""
         trends = {}
         
+        # 첫 실행인 경우 (어제 키워드 없음)
+        if not yesterday_keywords:
+            print("📋 첫 실행입니다. 모든 키워드를 기본으로 표시합니다.")
+            for keyword, count in today_keywords.items():
+                trends[keyword] = {
+                    'count': count,
+                    'tag': '',  # 첫 실행에는 태그 없음
+                    'change': '0'
+                }
+            return trends
+        
         for keyword, today_count in today_keywords.items():
             yesterday_count = yesterday_keywords.get(keyword, 0)
             
