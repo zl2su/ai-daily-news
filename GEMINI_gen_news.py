@@ -109,6 +109,96 @@ class AINewsWebGenerator:
         
         return unique_articles[:15]
     
+    def analyze_keywords_optimal(self, articles):
+        """최적화된 키워드 추출 (빈도 3회 + 특별 키워드)"""
+        from collections import Counter
+        import re
+        
+        # 모든 뉴스 텍스트 합치기
+        all_text = ""
+        for article in articles:
+            title = article.get('title', '').lower()
+            summary = article.get('summary', '').lower()
+            all_text += f" {title} {summary}"
+        
+        # 기술/응용 분야 중심 핵심 키워드
+        core_keywords = [
+            'autonomous', 'medical', 'healthcare', 'education', 
+            'coding', 'robotics', 'vision', 'voice', 'multimodal'
+        ]
+        
+        # 자동 단어 추출
+        # 대문자로 시작하는 단어들 (회사명, 제품명)
+        capitalized_words = re.findall(r'\b[A-Z][a-z]{2,15}\b', all_text.title())
+        
+        # 일반 단어들 (3글자 이상)
+        regular_words = re.findall(r'\b[a-z]{3,15}\b', all_text)
+        
+        # 진짜 기본적인 불용어만 (대폭 축소)
+        stop_words = {
+            'the', 'and', 'for', 'are', 'with', 'this', 'that', 'from',
+            'will', 'can', 'said', 'more', 'about', 'than', 'also', 'have',
+            'when', 'where', 'what', 'how', 'why', 'who', 'which',
+            'been', 'they', 'their', 'would', 'could', 'should', 'much',
+            # 웹 관련만 (진짜 의미없는 것들)
+            'href', 'https', 'www', 'http', 'html', 'com'
+        }
+        
+        # 특별 키워드 (새로운 AI 도구/회사들)
+        special_keywords = {
+            'sora', 'devin', 'claude', 'gemini', 'midjourney', 'cursor', 
+            'perplexity', 'runway', 'stability', 'cohere', 'replicate',
+            'huggingface', 'github', 'copilot', 'tesla', 'waymo'
+        }
+        
+        auto_keywords = []
+        
+        # 대문자 단어들 (회사명, 제품명 가능성 높음) - 불용어 필터링 추가
+        for word in set(capitalized_words):
+            if word.lower() not in stop_words and len(word) >= 3:
+                auto_keywords.append(word)
+        
+        # 일반 단어들 중 빈도 높은 것들 - 불용어 필터링 강화
+        word_freq = Counter([word for word in regular_words 
+                            if word not in stop_words and len(word) >= 3])
+        
+        # 빈도 3회 이상인 단어들 선택 (특별 키워드는 2회도 허용)
+        for word, freq in word_freq.items():
+            if freq >= 3 or (freq >= 2 and word.lower() in special_keywords):
+                auto_keywords.append(word.title())
+        
+        # 전체 키워드 통합
+        all_keywords = core_keywords + auto_keywords
+        
+        keyword_counts = Counter()
+        
+        # 키워드 빈도 계산
+        for keyword in all_keywords:
+            count = all_text.count(keyword.lower())
+            if count > 0:
+                # 표시명 정리
+                if keyword.lower() in ['ai', 'gpt', 'llm', 'api', 'ceo', 'cto']:
+                    display_name = keyword.upper()
+                elif keyword.lower() in special_keywords:
+                    display_name = keyword.title()
+                else:
+                    display_name = keyword.title()
+                
+                keyword_counts[display_name] = count
+        
+        # 상위 10개 반환
+        top_keywords = dict(keyword_counts.most_common(10))
+        
+        print(f"🔍 최적화된 키워드 분석: {len(top_keywords)}개 발견")
+        print(f"  📋 핵심 키워드: {len([k for k in core_keywords if k in all_text])}개")
+        print(f"  🔍 자동 발견: {len(top_keywords) - len([k for k in core_keywords if k in all_text])}개")
+        
+        # 상위 5개 키워드 미리보기
+        for i, (keyword, count) in enumerate(list(top_keywords.items())[:5]):
+            print(f"    {i+1}. {keyword}: {count}회")
+        
+        return top_keywords
+    
     def load_yesterday_keywords(self):
         """어제 키워드 데이터 불러오기"""
         try:
