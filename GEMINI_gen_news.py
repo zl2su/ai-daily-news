@@ -132,7 +132,7 @@ class AINewsWebGenerator:
         capitalized_words = re.findall(r'\b[A-Z][a-z]{2,15}\b', all_text.title())
         
         # 일반 단어들
-        regular_words = re.findall(r'\b[a-z]{4,15}\b', all_text)
+        regular_words = re.findall(r'\b[a-z]{3,15}\b', all_text)
         
         # 대폭 강화된 불용어 리스트
         enhanced_stop_words = {
@@ -168,7 +168,7 @@ class AINewsWebGenerator:
         
         # 빈도 5회 이상인 단어들 선택 (특별 키워드는 3회도 허용)
         for word, freq in word_freq.items():
-            if freq >= 5 or (freq >= 3 and word.lower() in special_keywords):
+            if freq >= 4 or (freq >= 3 and word.lower() in special_keywords):
                 auto_keywords.append(word.title())
         
         # 전체 키워드 통합
