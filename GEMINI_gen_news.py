@@ -141,7 +141,7 @@ class AINewsWebGenerator:
             'when', 'where', 'what', 'how', 'why', 'who', 'which',
             'been', 'they', 'their', 'would', 'could', 'should', 'much',
             # 웹 관련 + 분리된 단어들 + 문제 단어들
-            'href', 'https', 'www', 'http', 'html', 'com',
+            'href', 'https', 'www', 'http', 'html', 'com', 'You'
             'chat', 'gpt', 'machine', 'learning', 'deep', 'artificial',
             'new', 'search', 'agent', 'news', 'research', 'its', 'openai'
         }
