@@ -134,14 +134,15 @@ class AINewsWebGenerator:
         # 일반 단어들 (3글자 이상)
         regular_words = re.findall(r'\b[a-z]{3,15}\b', all_text)
         
-        # 진짜 기본적인 불용어만 (대폭 축소)
+        # 진짜 기본적인 불용어만 (chat 추가)
         stop_words = {
             'the', 'and', 'for', 'are', 'with', 'this', 'that', 'from',
             'will', 'can', 'said', 'more', 'about', 'than', 'also', 'have',
             'when', 'where', 'what', 'how', 'why', 'who', 'which',
             'been', 'they', 'their', 'would', 'could', 'should', 'much',
-            # 웹 관련만 (진짜 의미없는 것들)
-            'href', 'https', 'www', 'http', 'html', 'com'
+            # 웹 관련 + 분리된 단어들
+            'href', 'https', 'www', 'http', 'html', 'com',
+            'chat', 'gpt', 'machine', 'learning', 'deep', 'artificial'
         }
         
         # 특별 키워드 (새로운 AI 도구/회사들)
@@ -170,9 +171,32 @@ class AINewsWebGenerator:
         # 전체 키워드 통합
         all_keywords = core_keywords + auto_keywords
         
+        # 복합 키워드 우선 처리 (띄어쓰기 문제 해결)
+        compound_keywords = {
+            'chatgpt': ['chat gpt', 'chatgpt'],
+            'machine learning': ['machine learning'],
+            'deep learning': ['deep learning'], 
+            'artificial intelligence': ['artificial intelligence'],
+            'claude ai': ['claude ai', 'claude 3', 'claude 3.5'],
+            'gemini pro': ['gemini pro', 'gemini advanced'],
+            'github copilot': ['github copilot'],
+            'openai gpt': ['openai gpt', 'gpt-4', 'gpt-5']
+        }
+        
         keyword_counts = Counter()
         
-        # 키워드 빈도 계산
+        # 1. 복합 키워드 먼저 계산
+        for display_name, patterns in compound_keywords.items():
+            total_count = 0
+            for pattern in patterns:
+                total_count += all_text.count(pattern.lower())
+            if total_count > 0:
+                keyword_counts[display_name.title()] = total_count
+                # 복합 키워드 부분들을 텍스트에서 제거 (중복 방지)
+                for pattern in patterns:
+                    all_text = all_text.replace(pattern.lower(), '')
+        
+        # 2. 일반 키워드 계산 (복합 키워드 제거 후)
         for keyword in all_keywords:
             count = all_text.count(keyword.lower())
             if count > 0:
