@@ -1,0 +1,378 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 뉴스 데일리 | 2025-07-18</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .update-time {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #e9ecef;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        
+        .summary-section {
+            padding: 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .summary-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .summary-card h3 {
+            color: #4facfe;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .trends-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .trend-tag {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            padding: 30px;
+        }
+        
+        .news-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .news-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            line-height: 1.4;
+        }
+        
+        .news-card p {
+            color: #7f8c8d;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+        
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .news-source {
+            background: #e8f5e8;
+            color: #2e7d32;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .news-date {
+            color: #95a5a6;
+            font-size: 0.8rem;
+        }
+        
+        .read-more {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .read-more:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        }
+        
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .refresh-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #4facfe;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .refresh-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        @media (max-width: 768px) {
+            .news-grid {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .summary-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 AI 뉴스 데일리</h1>
+            <p>오늘의 인공지능 뉴스를 한눈에</p>
+        </div>
+        
+        <div class="update-time">
+            마지막 업데이트: 2025년 07월 18일 01시 22분
+        </div>
+        
+        <div class="summary-section">
+            <div class="summary-card">
+                <h3>📈 오늘의 한줄 요약</h3>
+                <p>AI 에이전트 및 플랫폼 경쟁 심화,  투자 확대,  보안 및 규제 이슈 부상</p>
+            </div>
+            
+            <div class="summary-card">
+                <h3>🔥 주요 트렌드</h3>
+                <div class="trends-list">
+                    <span class="trend-tag">AI 에이전트 기능 고도화 (심층 연구, 음성 인식, 자율적 작업)</span><span class="trend-tag">AI 인프라 투자 및 경쟁 심화 (클라우드, 칩)</span><span class="trend-tag">AI 보안 및 규제 문제 대두</span>
+                </div>
+            </div>
+            
+            <div class="summary-card">
+                <h3>💡 시장 인사이트</h3>
+                <p>AI 에이전트 시장의 급성장과  OpenAI를 비롯한 기존 강자들과 신생 기업 간의 경쟁 심화, AI 인프라 및 보안 시장의 성장 가능성,  AI 기술의 윤리적 및 정치적 문제 부각</p>
+            </div>
+        </div>
+        
+        <div class="news-grid">
+        
+            <div class="news-card">
+                <div class="news-meta">
+                    <span class="news-source">VentureBeat</span>
+                    <span class="news-date">Thu, 17 Jul 2025</span>
+                </div>
+                <h3>Mistral’s Le Chat adds deep research agent and voice mode to challenge OpenAI’s enterprise dominance</h3>
+                <p>Mistral added deep research capabilities to its Le Chat platform, bringing it in direct competition against ChatGPT and Gemini....</p>
+                <a href="https://venturebeat.com/ai/mistrals-le-chat-adds-deep-research-agent-and-voice-mode-to-challenge-openais-enterprise-dominance/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-meta">
+                    <span class="news-source">VentureBeat</span>
+                    <span class="news-date">Thu, 17 Jul 2025</span>
+                </div>
+                <h3>OpenAI unveils ‘ChatGPT agent’ that gives ChatGPT its own computer to autonomously use your email and web apps, download and create files for you</h3>
+                <p>If a website needs you to log in, you can do that securely through a special browser view, which lets the agent dig deeper and handle more....</p>
+                <a href="https://venturebeat.com/ai/openai-unveils-chatgpt-agent-that-gives-chatgpt-its-own-computer-to-autonomously-use-your-email-and-web-apps-download-and-create-files-for-you/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-meta">
+                    <span class="news-source">VentureBeat</span>
+                    <span class="news-date">Thu, 17 Jul 2025</span>
+                </div>
+                <h3>Blaxel raises $7.3M seed round to build ‘AWS for AI agents’ after processing billions of agent requests</h3>
+                <p>Blaxel raises $7.3M seed funding to build specialized cloud infrastructure for AI agents, challenging AWS with purpose-built platform for autonomous AI systems....</p>
+                <a href="https://venturebeat.com/ai/blaxel-raises-7-3m-seed-round-to-build-aws-for-ai-agents-after-processing-billions-of-agent-requests/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-meta">
+                    <span class="news-source">VentureBeat</span>
+                    <span class="news-date">Thu, 17 Jul 2025</span>
+                </div>
+                <h3>Slack gets smarter: New AI tools summarize chats, explain jargon, and automate work</h3>
+                <p>Slack launches comprehensive AI features including enterprise search and writing assistance as Salesforce challenges Microsoft's workplace AI dominance while blocking rival access to platform data....</p>
+                <a href="https://venturebeat.com/ai/slack-gets-smarter-new-ai-tools-summarize-chats-explain-jargon-and-automate-work/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-meta">
+                    <span class="news-source">AI News & Artificial Intelligence | TechCrunch</span>
+                    <span class="news-date">Thu, 17 Jul 2025</span>
+                </div>
+                <h3>Anthropic tightens usage limits for Claude Code – without telling users</h3>
+                <p>Claude Code users have been hit with unexpectedly restrictive usage limits. The problems, many of which have been aired on Claude Code’s GitHub page, seem to be concentrated among heavy users of the s...</p>
+                <a href="https://techcrunch.com/2025/07/17/anthropic-tightens-usage-limits-for-claude-code-without-telling-users/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-meta">
+                    <span class="news-source">AI News & Artificial Intelligence | TechCrunch</span>
+                    <span class="news-date">Thu, 17 Jul 2025</span>
+                </div>
+                <h3>OpenAI launches a general purpose agent in ChatGPT</h3>
+                <p>OpenAI announced the launch of ChatGPT agent, which the company claims to be its most capable AI agent product yet....</p>
+                <a href="https://techcrunch.com/2025/07/17/openai-launches-a-general-purpose-agent-in-chatgpt/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-meta">
+                    <span class="news-source">AI News & Artificial Intelligence | TechCrunch</span>
+                    <span class="news-date">Thu, 17 Jul 2025</span>
+                </div>
+                <h3>Mistral’s Le Chat chatbot gets a productivity push with new ‘deep research’ mode</h3>
+                <p>French AI lab Mistral introduced a range of new features to its Le Chat chatbot on Thursday that bring it closer to the capabilities of rivals like OpenAI and Google. The new update includes a “deep r...</p>
+                <a href="https://techcrunch.com/2025/07/17/mistrals-le-chat-chatbot-gets-a-productivity-push-with-new-deep-research-mode/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-meta">
+                    <span class="news-source">AI News & Artificial Intelligence | TechCrunch</span>
+                    <span class="news-date">Thu, 17 Jul 2025</span>
+                </div>
+                <h3>Confident Security, ‘the Signal for AI,’ comes out of stealth with $4.2M</h3>
+                <p>San Francisco-based startup Confident Security wants to be “the Signal for AI." The company just came out of stealth with $4.2 million and a tool that wraps around AI models to guarantee data stays pr...</p>
+                <a href="https://techcrunch.com/2025/07/17/confident-security-the-signal-for-ai-comes-out-of-stealth-with-4-2m/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-meta">
+                    <span class="news-source">AI News & Artificial Intelligence | TechCrunch</span>
+                    <span class="news-date">Thu, 17 Jul 2025</span>
+                </div>
+                <h3>UAE’s deal to buy Nvidia AI chips reportedly on hold</h3>
+                <p>The U.S. is reportedly holding up the deal due to concerns that AI chips could be smuggled to China from the UAE....</p>
+                <a href="https://techcrunch.com/2025/07/17/uaes-deal-to-buy-nvidia-ai-chips-reportedly-on-hold/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-meta">
+                    <span class="news-source">AI News & Artificial Intelligence | TechCrunch</span>
+                    <span class="news-date">Thu, 17 Jul 2025</span>
+                </div>
+                <h3>Lovable becomes a unicorn with $200M Series A just 8 months after launch</h3>
+                <p>Only eight months after its launch, Sweden's Lovable has raised a $200 million Series A round led by Accel at a $1.8 billion valuation....</p>
+                <a href="https://techcrunch.com/2025/07/17/lovable-becomes-a-unicorn-with-200m-series-a-just-8-months-after-launch/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-meta">
+                    <span class="news-source">AI News</span>
+                    <span class="news-date">Thu, 17 Jul 2025</span>
+                </div>
+                <h3>Mistral AI gives Le Chat voice recognition and deep research tools</h3>
+                <p><p>Mistral AI has updated Le Chat with voice recognition, deep research tools, and other features to make the chatbot a more helpful assistant. The company believes that the best AI assistants should ...</p>
+                <a href="https://www.artificialintelligence-news.com/news/mistral-ai-le-chat-voice-recognition-deep-research-tools/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-meta">
+                    <span class="news-source">AI News</span>
+                    <span class="news-date">Thu, 17 Jul 2025</span>
+                </div>
+                <h3>Zuckerberg’s US$15b bet: How Meta’s ‘Superintelligence Labs’ became Silicon Valley’s most expensive AI talent war</h3>
+                <p><p>Mark Zuckerberg has a history of making audacious bets that reshape entire industries – and losing spectacularly when they don&#8217;t pan out. After burning through US$46 billion on the metaverse ...</p>
+                <a href="https://www.artificialintelligence-news.com/news/meta-superintelligence-ai-lab-zuckerberg-talent-war/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+        </div>
+        
+        <div class="footer">
+            <p>🔄 매일 오전 10시 자동 업데이트 | Made with Gemini AI</p>
+        </div>
+    </div>
+    
+    <button class="refresh-btn" onclick="location.reload()">🔄</button>
+    
+    <script>
+        // 자동 새로고침 (30분마다)
+        setTimeout(function() {
+            location.reload();
+        }, 30 * 60 * 1000);
+    </script>
+</body>
+</html>
+        
