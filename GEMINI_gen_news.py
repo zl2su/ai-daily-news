@@ -131,16 +131,17 @@ class AINewsWebGenerator:
         # 대문자로 시작하는 단어들 (회사명, 제품명)
         capitalized_words = re.findall(r'\b[A-Z][a-z]{2,15}\b', all_text.title())
         
-        # 일반 단어들
+        # 일반 단어들 (3글자 이상)
         regular_words = re.findall(r'\b[a-z]{3,15}\b', all_text)
         
-        # 불용어 리스트
+        # 진짜 기본적인 불용어만 (대폭 축소)
         stop_words = {
             'the', 'and', 'for', 'are', 'with', 'this', 'that', 'from',
             'will', 'can', 'said', 'more', 'about', 'than', 'also', 'have',
             'when', 'where', 'what', 'how', 'why', 'who', 'which',
-            # 웹 관련만
-            'href', 'https', 'www', 'http', 'html'
+            'been', 'they', 'their', 'would', 'could', 'should', 'much',
+            # 웹 관련만 (진짜 의미없는 것들)
+            'href', 'https', 'www', 'http', 'html', 'com'
         }
         
         # 특별 키워드 (새로운 AI 도구/회사들)
@@ -152,24 +153,19 @@ class AINewsWebGenerator:
         
         auto_keywords = []
         
-        # 대문자 단어들 (회사명, 제품명 가능성 높음)
+        # 대문자 단어들 (회사명, 제품명 가능성 높음) - 불용어 필터링 추가
         for word in set(capitalized_words):
             if word.lower() not in stop_words and len(word) >= 3:
                 auto_keywords.append(word)
-        print(f"🔍 stop_words 샘플: {list(stop_words)[:10]}")
-
         
-        # 일반 단어들 중 빈도 높은 것들
+        # 일반 단어들 중 빈도 높은 것들 - 불용어 필터링 강화
         word_freq = Counter([word for word in regular_words 
                             if word not in stop_words and len(word) >= 3])
-        print(f"🔍 word_freq 상위 10개: {dict(word_freq.most_common(10))}")
-
-        # 빈도 5회 이상인 단어들 선택 (특별 키워드는 3회도 허용)
+        
+        # 빈도 3회 이상인 단어들 선택 (특별 키워드는 2회도 허용)
         for word, freq in word_freq.items():
             if freq >= 3 or (freq >= 2 and word.lower() in special_keywords):
                 auto_keywords.append(word.title())
-                print(f"  ✅ 키워드 추가: {word.title()} ({freq}회)")
-
         
         # 전체 키워드 통합
         all_keywords = core_keywords + auto_keywords
@@ -203,9 +199,214 @@ class AINewsWebGenerator:
         
         return top_keywords
     
-    def generate_keyword_chart_html(self, keyword_data):
-        """키워드 빈도 차트 HTML 생성"""
-        if not keyword_data:
+    def load_yesterday_keywords(self):
+        """어제 키워드 데이터 불러오기"""
+        try:
+            with open('yesterday_keywords.json', 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                print(f"📋 어제 키워드 불러옴: {len(data)}개")
+                return data
+        except FileNotFoundError:
+            print("📋 어제 키워드 파일 없음 (첫 실행)")
+            return {}
+        except Exception as e:
+            print(f"❌ 어제 키워드 불러오기 실패: {e}")
+            return {}
+    
+    def save_today_keywords(self, keyword_data):
+        """오늘 키워드 데이터 저장"""
+        try:
+            with open('yesterday_keywords.json', 'w', encoding='utf-8') as f:
+                json.dump(keyword_data, f, ensure_ascii=False, indent=2)
+                print(f"💾 오늘 키워드 저장 완료: {len(keyword_data)}개")
+        except Exception as e:
+            print(f"❌ 키워드 저장 실패: {e}")
+    
+    def analyze_keyword_trends(self, today_keywords, yesterday_keywords):
+        """키워드 트렌드 분석 (NEW, HOT, RISING)"""
+        trends = {}
+        
+        # 첫 실행인 경우 (어제 키워드 없음)
+        if not yesterday_keywords:
+            print("📋 첫 실행입니다. 모든 키워드를 기본으로 표시합니다.")
+            for keyword, count in today_keywords.items():
+                trends[keyword] = {
+                    'count': count,
+                    'tag': '',  # 첫 실행에는 태그 없음
+                    'change': '0'
+                }
+            return trends
+        
+        for keyword, today_count in today_keywords.items():
+            yesterday_count = yesterday_keywords.get(keyword, 0)
+            
+            if yesterday_count == 0:
+                # 어제 없던 키워드
+                trends[keyword] = {
+                    'count': today_count,
+                    'tag': '🆕 NEW',
+                    'change': f'+{today_count}'
+                }
+            elif today_count >= yesterday_count * 2:
+                # 빈도가 2배 이상 증가
+                trends[keyword] = {
+                    'count': today_count,
+                    'tag': '🔥 HOT',
+                    'change': f'+{today_count - yesterday_count}'
+                }
+            elif today_count > yesterday_count:
+                # 점진적 상승
+                trends[keyword] = {
+                    'count': today_count,
+                    'tag': '📈 RISING',
+                    'change': f'+{today_count - yesterday_count}'
+                }
+            else:
+                # 변화 없거나 하락
+                trends[keyword] = {
+                    'count': today_count,
+                    'tag': '',
+                    'change': f'{today_count - yesterday_count}' if today_count != yesterday_count else '0'
+                }
+        
+        print(f"📊 트렌드 분석 완료:")
+        new_count = len([k for k, v in trends.items() if v['tag'] == '🆕 NEW'])
+        hot_count = len([k for k, v in trends.items() if v['tag'] == '🔥 HOT'])
+        rising_count = len([k for k, v in trends.items() if v['tag'] == '📈 RISING'])
+        
+        print(f"  🆕 NEW: {new_count}개")
+        print(f"  🔥 HOT: {hot_count}개")
+        print(f"  📈 RISING: {rising_count}개")
+        
+        return trends
+        """최적화된 키워드 추출 (빈도 3회 + 특별 키워드)"""
+        from collections import Counter
+        import re
+        
+        # 모든 뉴스 텍스트 합치기
+        all_text = ""
+        for article in articles:
+            title = article.get('title', '').lower()
+            summary = article.get('summary', '').lower()
+            all_text += f" {title} {summary}"
+        
+        # 기술/응용 분야 중심 핵심 키워드
+        core_keywords = [
+            'autonomous', 'medical', 'healthcare', 'education', 
+            'coding', 'robotics', 'vision', 'voice', 'multimodal'
+        ]
+        
+        # 자동 단어 추출
+        # 대문자로 시작하는 단어들 (회사명, 제품명)
+        capitalized_words = re.findall(r'\b[A-Z][a-z]{2,15}\b', all_text.title())
+        
+        # 일반 단어들 (3글자 이상)
+        regular_words = re.findall(r'\b[a-z]{3,15}\b', all_text)
+        
+        # 진짜 기본적인 불용어만 (대폭 축소)
+        stop_words = {
+            'the', 'and', 'for', 'are', 'with', 'this', 'that', 'from',
+            'will', 'can', 'said', 'more', 'about', 'than', 'also', 'have',
+            'when', 'where', 'what', 'how', 'why', 'who', 'which',
+            'been', 'they', 'their', 'would', 'could', 'should', 'much',
+            # 웹 관련만 (진짜 의미없는 것들)
+            'href', 'https', 'www', 'http', 'html', 'com'
+        }
+        
+        # 특별 키워드 (새로운 AI 도구/회사들)
+        special_keywords = {
+            'sora', 'devin', 'claude', 'gemini', 'midjourney', 'cursor', 
+            'perplexity', 'runway', 'stability', 'cohere', 'replicate',
+            'huggingface', 'github', 'copilot', 'tesla', 'waymo'
+        }
+        
+        auto_keywords = []
+        
+        # 대문자 단어들 (회사명, 제품명 가능성 높음) - 불용어 필터링 추가
+        for word in set(capitalized_words):
+            if word.lower() not in stop_words and len(word) >= 3:
+                auto_keywords.append(word)
+        
+        print(f"🔍 stop_words 샘플: {list(stop_words)[:10]}")
+        
+        # 일반 단어들 중 빈도 높은 것들 - 불용어 필터링 강화
+        word_freq = Counter([word for word in regular_words 
+                            if word not in stop_words and len(word) >= 3])
+        
+        print(f"🔍 word_freq 상위 10개: {dict(word_freq.most_common(10))}")
+        
+        # 빈도 3회 이상으로 낮춤 (특별 키워드는 2회도 허용)
+        for word, freq in word_freq.items():
+            if freq >= 3 or (freq >= 2 and word.lower() in special_keywords):
+                auto_keywords.append(word.title())
+                print(f"  ✅ 키워드 추가: {word.title()} ({freq}회)")
+        
+        # 전체 키워드 통합
+        all_keywords = core_keywords + auto_keywords
+        
+        keyword_counts = Counter()
+        
+        # 키워드 빈도 계산
+        for keyword in all_keywords:
+            count = all_text.count(keyword.lower())
+            if count > 0:
+                # 표시명 정리
+                if keyword.lower() in ['ai', 'gpt', 'llm', 'api', 'ceo', 'cto']:
+                    display_name = keyword.upper()
+                elif keyword.lower() in special_keywords:
+                    display_name = keyword.title()
+                else:
+                    display_name = keyword.title()
+                
+                keyword_counts[display_name] = count
+        
+        # 상위 10개 반환
+        top_keywords = dict(keyword_counts.most_common(10))
+        
+        # 일반 단어들 중 빈도 높은 것들 - 불용어 필터링 강화
+        word_freq = Counter([word for word in regular_words 
+                            if word not in stop_words and len(word) >= 3])
+        
+        # 빈도 3회 이상인 단어들 선택 (특별 키워드는 2회도 허용)
+        for word, freq in word_freq.items():
+            if freq >= 3 or (freq >= 2 and word.lower() in special_keywords):
+                auto_keywords.append(word.title())
+        
+        # 전체 키워드 통합
+        all_keywords = core_keywords + auto_keywords
+        
+        keyword_counts = Counter()
+        
+        # 키워드 빈도 계산
+        for keyword in all_keywords:
+            count = all_text.count(keyword.lower())
+            if count > 0:
+                # 표시명 정리
+                if keyword.lower() in ['ai', 'gpt', 'llm', 'api', 'ceo', 'cto']:
+                    display_name = keyword.upper()
+                elif keyword.lower() in special_keywords:
+                    display_name = keyword.title()
+                else:
+                    display_name = keyword.title()
+                
+                keyword_counts[display_name] = count
+        
+        # 상위 10개 반환
+        top_keywords = dict(keyword_counts.most_common(10))
+        
+        print(f"🔍 최적화된 키워드 분석: {len(top_keywords)}개 발견")
+        print(f"  📋 핵심 키워드: {len([k for k in core_keywords if k in all_text])}개")
+        print(f"  🔍 자동 발견: {len(top_keywords) - len([k for k in core_keywords if k in all_text])}개")
+        
+        # 상위 5개 키워드 미리보기
+        for i, (keyword, count) in enumerate(list(top_keywords.items())[:5]):
+            print(f"    {i+1}. {keyword}: {count}회")
+        
+        return top_keywords
+    
+    def generate_keyword_chart_html(self, keyword_trends):
+        """키워드 빈도 차트 HTML 생성 (트렌드 태그 포함)"""
+        if not keyword_trends:
             return """
             <div class="keyword-chart">
                 <h3>📊 키워드 트렌드</h3>
@@ -213,7 +414,7 @@ class AINewsWebGenerator:
             </div>
             """
         
-        max_count = max(keyword_data.values()) if keyword_data else 1
+        max_count = max([data['count'] for data in keyword_trends.values()]) if keyword_trends else 1
         
         chart_html = """
         <div class="keyword-chart">
@@ -221,15 +422,26 @@ class AINewsWebGenerator:
             <div class="chart-container">
         """
         
+        # 키워드를 빈도순으로 정렬
+        sorted_keywords = sorted(keyword_trends.items(), key=lambda x: x[1]['count'], reverse=True)
+        
         # 각 키워드별 바 차트
-        for keyword, count in keyword_data.items():
+        for keyword, data in sorted_keywords:
+            count = data['count']
+            tag = data['tag']
+            change = data['change']
             percentage = (count / max_count) * 100
+            
             chart_html += f"""
             <div class="keyword-bar">
-                <div class="keyword-label">{keyword}</div>
+                <div class="keyword-label">
+                    {keyword}
+                    {f'<span class="trend-tag">{tag}</span>' if tag else ''}
+                </div>
                 <div class="bar-container">
                     <div class="bar" style="width: {percentage}%"></div>
                     <span class="count">{count}</span>
+                    {f'<span class="change">({change})</span>' if change != '0' else ''}
                 </div>
             </div>
             """
@@ -266,10 +478,23 @@ class AINewsWebGenerator:
         }
         
         .keyword-label {
-            min-width: 140px;
+            min-width: 180px;
             font-weight: 500;
             color: #2c3e50;
             font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .trend-tag {
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 8px;
+            background: #f0f8ff;
+            border: 1px solid #4facfe;
+            color: #4facfe;
+            font-weight: 600;
         }
         
         .bar-container {
@@ -318,14 +543,25 @@ class AINewsWebGenerator:
             font-size: 0.9rem;
         }
         
+        .change {
+            font-size: 0.8rem;
+            color: #666;
+            min-width: 40px;
+            text-align: right;
+        }
+        
         @media (max-width: 768px) {
             .keyword-label {
-                min-width: 100px;
+                min-width: 140px;
                 font-size: 0.8rem;
             }
             
             .bar {
                 height: 20px;
+            }
+            
+            .trend-tag {
+                font-size: 0.6rem;
             }
         }
         </style>
@@ -432,7 +668,7 @@ class AINewsWebGenerator:
             print(f"❌ Gemini API 오류: {e}")
             return None
     
-    def generate_html(self, articles, summary_data, keyword_data=None):
+    def generate_html(self, articles, summary_data, keyword_trends=None):
         """HTML 웹페이지 생성"""
         current_time = time.strftime('%Y년 %m월 %d일 %H시 %M분')
         
@@ -661,7 +897,7 @@ class AINewsWebGenerator:
                 <p>{summary_data.get('today_summary', '요약 준비 중입니다.')}</p>
             </div>
             
-            {self.generate_keyword_chart_html(keyword_data) if keyword_data else ''}
+            {self.generate_keyword_chart_html(keyword_trends) if keyword_trends else ''}
             
             <div class="summary-card">
                 <h3>🔥 주요 트렌드</h3>
@@ -741,9 +977,16 @@ class AINewsWebGenerator:
         
         # 2. 최적화된 키워드 빈도 분석
         print("🔍 키워드 트렌드 분석 중...")
-        keyword_data = self.analyze_keywords_optimal(articles)
+        today_keywords = self.analyze_keywords_optimal(articles)
         
-        # 3. Gemini 요약
+        # 3. 어제 키워드 불러오고 트렌드 분석
+        yesterday_keywords = self.load_yesterday_keywords()
+        keyword_trends = self.analyze_keyword_trends(today_keywords, yesterday_keywords)
+        
+        # 4. 오늘 키워드 저장 (내일을 위해)
+        self.save_today_keywords(today_keywords)
+        
+        # 5. Gemini 요약
         print("🤖 Gemini AI 분석 중...")
         summary_data = self.get_gemini_summary(articles)
         
@@ -754,9 +997,9 @@ class AINewsWebGenerator:
                 "market_insight": "AI 기술이 빠르게 발전하고 있습니다."
             }
         
-        # 4. HTML 생성 (키워드 차트 포함)
+        # 6. HTML 생성 (키워드 차트 포함)
         print("🎨 웹페이지 생성 중...")
-        html_content = self.generate_html(articles, summary_data, keyword_data)
+        html_content = self.generate_html(articles, summary_data, keyword_trends)
         
         # 5. 파일 저장
         self.save_to_file(html_content)

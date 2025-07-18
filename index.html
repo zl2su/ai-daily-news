@@ -214,13 +214,13 @@
         </div>
         
         <div class="update-time">
-            마지막 업데이트: 2025년 07월 18일 04시 56분
+            마지막 업데이트: 2025년 07월 18일 05시 34분
         </div>
         
         <div class="summary-section">
             <div class="summary-card">
                 <h3>📈 오늘의 한줄 요약</h3>
-                <p>AI 경쟁 심화, 새로운 기능 추가 및 투자 확대,  규제 및 보안 우려</p>
+                <p>AI 경쟁 심화 및  새로운 AI 에이전트, 기능 출시, 투자 유치 소식이 주를 이뤘다. 특히 OpenAI를 겨냥한 경쟁사들의 공격적인 행보가 두드러졌다.</p>
             </div>
             
             
@@ -229,82 +229,122 @@
             <div class="chart-container">
         
             <div class="keyword-bar">
-                <div class="keyword-label">Chat</div>
+                <div class="keyword-label">
+                    Chat
+                    
+                </div>
                 <div class="bar-container">
                     <div class="bar" style="width: 100.0%"></div>
                     <span class="count">18</span>
+                    
                 </div>
             </div>
             
             <div class="keyword-bar">
-                <div class="keyword-label">Com</div>
-                <div class="bar-container">
-                    <div class="bar" style="width: 72.22222222222221%"></div>
-                    <span class="count">13</span>
+                <div class="keyword-label">
+                    New
+                    
                 </div>
-            </div>
-            
-            <div class="keyword-bar">
-                <div class="keyword-label">New</div>
                 <div class="bar-container">
                     <div class="bar" style="width: 66.66666666666666%"></div>
                     <span class="count">12</span>
+                    
                 </div>
             </div>
             
             <div class="keyword-bar">
-                <div class="keyword-label">Deep</div>
+                <div class="keyword-label">
+                    Deep
+                    
+                </div>
                 <div class="bar-container">
                     <div class="bar" style="width: 55.55555555555556%"></div>
                     <span class="count">10</span>
+                    
                 </div>
             </div>
             
             <div class="keyword-bar">
-                <div class="keyword-label">Agent</div>
+                <div class="keyword-label">
+                    Mistral
+                    
+                </div>
                 <div class="bar-container">
                     <div class="bar" style="width: 50.0%"></div>
                     <span class="count">9</span>
+                    
                 </div>
             </div>
             
             <div class="keyword-bar">
-                <div class="keyword-label">Search</div>
+                <div class="keyword-label">
+                    Search
+                    
+                </div>
                 <div class="bar-container">
                     <div class="bar" style="width: 50.0%"></div>
                     <span class="count">9</span>
+                    
                 </div>
             </div>
             
             <div class="keyword-bar">
-                <div class="keyword-label">Mistral</div>
+                <div class="keyword-label">
+                    Agent
+                    
+                </div>
                 <div class="bar-container">
                     <div class="bar" style="width: 50.0%"></div>
                     <span class="count">9</span>
+                    
                 </div>
             </div>
             
             <div class="keyword-bar">
-                <div class="keyword-label">Research</div>
+                <div class="keyword-label">
+                    News
+                    
+                </div>
                 <div class="bar-container">
                     <div class="bar" style="width: 44.44444444444444%"></div>
                     <span class="count">8</span>
+                    
                 </div>
             </div>
             
             <div class="keyword-bar">
-                <div class="keyword-label">News</div>
+                <div class="keyword-label">
+                    Research
+                    
+                </div>
                 <div class="bar-container">
                     <div class="bar" style="width: 44.44444444444444%"></div>
                     <span class="count">8</span>
+                    
                 </div>
             </div>
             
             <div class="keyword-bar">
-                <div class="keyword-label">Its</div>
+                <div class="keyword-label">
+                    Its
+                    
+                </div>
                 <div class="bar-container">
                     <div class="bar" style="width: 44.44444444444444%"></div>
                     <span class="count">8</span>
+                    
+                </div>
+            </div>
+            
+            <div class="keyword-bar">
+                <div class="keyword-label">
+                    Openai
+                    
+                </div>
+                <div class="bar-container">
+                    <div class="bar" style="width: 38.88888888888889%"></div>
+                    <span class="count">7</span>
+                    
                 </div>
             </div>
             
@@ -339,10 +379,23 @@
         }
         
         .keyword-label {
-            min-width: 140px;
+            min-width: 180px;
             font-weight: 500;
             color: #2c3e50;
             font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .trend-tag {
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 8px;
+            background: #f0f8ff;
+            border: 1px solid #4facfe;
+            color: #4facfe;
+            font-weight: 600;
         }
         
         .bar-container {
@@ -391,14 +444,25 @@
             font-size: 0.9rem;
         }
         
+        .change {
+            font-size: 0.8rem;
+            color: #666;
+            min-width: 40px;
+            text-align: right;
+        }
+        
         @media (max-width: 768px) {
             .keyword-label {
-                min-width: 100px;
+                min-width: 140px;
                 font-size: 0.8rem;
             }
             
             .bar {
                 height: 20px;
+            }
+            
+            .trend-tag {
+                font-size: 0.6rem;
             }
         }
         </style>
@@ -407,13 +471,13 @@
             <div class="summary-card">
                 <h3>🔥 주요 트렌드</h3>
                 <div class="trends-list">
-                    <span class="trend-tag">AI 에이전트 경쟁 심화</span><span class="trend-tag">대규모 언어 모델 기능 확장(연구, 음성, 생산성)</span><span class="trend-tag">AI 인프라 및 보안 투자 증가</span>
+                    <span class="trend-tag">AI 에이전트 경쟁 심화</span><span class="trend-tag">생성형 AI 기능 확장 (음성 인식, 심층 검색 등)</span><span class="trend-tag">AI 인프라 투자 및 개발</span>
                 </div>
             </div>
             
             <div class="summary-card">
                 <h3>💡 시장 인사이트</h3>
-                <p>OpenAI를 중심으로 한 AI 경쟁이 치열해지고 있으며, 다양한 기업들이 새로운 기능과 서비스를 출시하고 투자를 확대하고 있다.  동시에 AI의 윤리적 문제, 보안 및 규제에 대한 우려 또한 커지고 있다.</p>
+                <p>AI 시장 경쟁이 치열해지고 있으며, 특히 OpenAI를 중심으로 한 경쟁이 가속화되고 있다.  다양한 기능을 갖춘 AI 에이전트와 관련 인프라에 대한 투자가 활발히 이루어지고 있다.</p>
             </div>
         </div>
         
