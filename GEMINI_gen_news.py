@@ -134,15 +134,16 @@ class AINewsWebGenerator:
         # 일반 단어들 (3글자 이상)
         regular_words = re.findall(r'\b[a-z]{3,15}\b', all_text)
         
-        # 진짜 기본적인 불용어만 (chat 추가)
+        # 진짜 기본적인 불용어만 (문제 단어들 대폭 추가)
         stop_words = {
             'the', 'and', 'for', 'are', 'with', 'this', 'that', 'from',
             'will', 'can', 'said', 'more', 'about', 'than', 'also', 'have',
             'when', 'where', 'what', 'how', 'why', 'who', 'which',
             'been', 'they', 'their', 'would', 'could', 'should', 'much',
-            # 웹 관련 + 분리된 단어들
+            # 웹 관련 + 분리된 단어들 + 문제 단어들
             'href', 'https', 'www', 'http', 'html', 'com',
-            'chat', 'gpt', 'machine', 'learning', 'deep', 'artificial'
+            'chat', 'gpt', 'machine', 'learning', 'deep', 'artificial',
+            'new', 'search', 'agent', 'news', 'research', 'its', 'openai'
         }
         
         # 특별 키워드 (새로운 AI 도구/회사들)
@@ -163,9 +164,9 @@ class AINewsWebGenerator:
         word_freq = Counter([word for word in regular_words 
                             if word not in stop_words and len(word) >= 3])
         
-        # 빈도 3회 이상인 단어들 선택 (특별 키워드는 2회도 허용)
+        # 빈도 5회 이상으로 올림 (특별 키워드는 3회도 허용)
         for word, freq in word_freq.items():
-            if freq >= 3 or (freq >= 2 and word.lower() in special_keywords):
+            if freq >= 5 or (freq >= 3 and word.lower() in special_keywords):
                 auto_keywords.append(word.title())
         
         # 전체 키워드 통합
