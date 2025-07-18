@@ -214,25 +214,206 @@
         </div>
         
         <div class="update-time">
-            마지막 업데이트: 2025년 07월 18일 02시 57분
+            마지막 업데이트: 2025년 07월 18일 03시 59분
         </div>
         
         <div class="summary-section">
             <div class="summary-card">
                 <h3>📈 오늘의 한줄 요약</h3>
-                <p>AI 에이전트 및 플랫폼 경쟁 심화, 대규모 투자 유치, AI 보안 및 윤리적 문제 부각</p>
+                <p>AI 챗봇 및 에이전트 기술 발전과 시장 경쟁 심화, AI 인프라 투자 확대 및 규제 우려 등이 주요 뉴스</p>
             </div>
+            
+            
+        <div class="keyword-chart">
+            <h3>📊 오늘의 AI 키워드 트렌드</h3>
+            <div class="chart-container">
+        
+            <div class="keyword-bar">
+                <div class="keyword-label">AI</div>
+                <div class="bar-container">
+                    <div class="bar" style="width: 100.0%"></div>
+                    <span class="count">40</span>
+                </div>
+            </div>
+            
+            <div class="keyword-bar">
+                <div class="keyword-label">Chat</div>
+                <div class="bar-container">
+                    <div class="bar" style="width: 45.0%"></div>
+                    <span class="count">18</span>
+                </div>
+            </div>
+            
+            <div class="keyword-bar">
+                <div class="keyword-label">Com</div>
+                <div class="bar-container">
+                    <div class="bar" style="width: 30.0%"></div>
+                    <span class="count">12</span>
+                </div>
+            </div>
+            
+            <div class="keyword-bar">
+                <div class="keyword-label">Deep</div>
+                <div class="bar-container">
+                    <div class="bar" style="width: 25.0%"></div>
+                    <span class="count">10</span>
+                </div>
+            </div>
+            
+            <div class="keyword-bar">
+                <div class="keyword-label">Agent</div>
+                <div class="bar-container">
+                    <div class="bar" style="width: 22.5%"></div>
+                    <span class="count">9</span>
+                </div>
+            </div>
+            
+            <div class="keyword-bar">
+                <div class="keyword-label">Mistral</div>
+                <div class="bar-container">
+                    <div class="bar" style="width: 22.5%"></div>
+                    <span class="count">9</span>
+                </div>
+            </div>
+            
+            <div class="keyword-bar">
+                <div class="keyword-label">Search</div>
+                <div class="bar-container">
+                    <div class="bar" style="width: 22.5%"></div>
+                    <span class="count">9</span>
+                </div>
+            </div>
+            
+            <div class="keyword-bar">
+                <div class="keyword-label">Tool</div>
+                <div class="bar-container">
+                    <div class="bar" style="width: 15.0%"></div>
+                    <span class="count">6</span>
+                </div>
+            </div>
+            
+            <div class="keyword-bar">
+                <div class="keyword-label">You</div>
+                <div class="bar-container">
+                    <div class="bar" style="width: 15.0%"></div>
+                    <span class="count">6</span>
+                </div>
+            </div>
+            
+            <div class="keyword-bar">
+                <div class="keyword-label">Chatgpt</div>
+                <div class="bar-container">
+                    <div class="bar" style="width: 12.5%"></div>
+                    <span class="count">5</span>
+                </div>
+            </div>
+            
+            </div>
+        </div>
+        
+        <style>
+        .keyword-chart {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .keyword-chart h3 {
+            color: #4facfe;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+        
+        .chart-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .keyword-bar {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .keyword-label {
+            min-width: 140px;
+            font-weight: 500;
+            color: #2c3e50;
+            font-size: 0.9rem;
+        }
+        
+        .bar-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .bar {
+            height: 25px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 12px;
+            min-width: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .bar:hover {
+            transform: scaleY(1.1);
+            box-shadow: 0 3px 10px rgba(79, 172, 254, 0.3);
+        }
+        
+        .bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shine 2s infinite;
+        }
+        
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .count {
+            font-weight: 600;
+            color: #4facfe;
+            min-width: 30px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .keyword-label {
+                min-width: 100px;
+                font-size: 0.8rem;
+            }
+            
+            .bar {
+                height: 20px;
+            }
+        }
+        </style>
+        
             
             <div class="summary-card">
                 <h3>🔥 주요 트렌드</h3>
                 <div class="trends-list">
-                    <span class="trend-tag">AI 에이전트 경쟁 심화</span><span class="trend-tag">생성형 AI 플랫폼 기능 확장</span><span class="trend-tag">AI 인프라 투자 증가</span><span class="trend-tag">AI 보안 및 규제 강화</span>
+                    <span class="trend-tag">AI 챗봇 기능 향상 (음성 인식, 심층 검색)</span><span class="trend-tag">AI 에이전트 및 플랫폼 경쟁 심화</span><span class="trend-tag">AI 인프라 투자 및 개발</span><span class="trend-tag">AI 규제 및 보안</span>
                 </div>
             </div>
             
             <div class="summary-card">
                 <h3>💡 시장 인사이트</h3>
-                <p>AI 에이전트 시장의 급성장과 함께,  클라우드 인프라 및 보안 시장의 성장이 예상됨.  대기업들의 AI 투자 확대와 경쟁 심화는 기술 발전을 가속화할 것으로 전망되나,  윤리적 문제와 규제 강화에 대한 대비가 필요함.</p>
+                <p>AI 시장 경쟁이 치열해지고 있으며, 챗봇 및 에이전트 기술 발전과 함께 관련 인프라 투자도 확대되고 있음.  AI 기술의 윤리적 문제 및 보안 우려도 함께 증가하고 있음.</p>
             </div>
         </div>
         
@@ -250,36 +431,6 @@
             
             <div class="news-card">
                 <div class="news-meta">
-                    <span class="news-source">VentureBeat</span>
-                    <span class="news-date">Thu, 17 Jul 2025</span>
-                </div>
-                <h3>OpenAI unveils ‘ChatGPT agent’ that gives ChatGPT its own computer to autonomously use your email and web apps, download and create files for you</h3>
-                <p>If a website needs you to log in, you can do that securely through a special browser view, which lets the agent dig deeper and handle more....</p>
-                <a href="https://venturebeat.com/ai/openai-unveils-chatgpt-agent-that-gives-chatgpt-its-own-computer-to-autonomously-use-your-email-and-web-apps-download-and-create-files-for-you/" target="_blank" class="read-more">자세히 읽기</a>
-            </div>
-            
-            <div class="news-card">
-                <div class="news-meta">
-                    <span class="news-source">VentureBeat</span>
-                    <span class="news-date">Thu, 17 Jul 2025</span>
-                </div>
-                <h3>Blaxel raises $7.3M seed round to build ‘AWS for AI agents’ after processing billions of agent requests</h3>
-                <p>Blaxel raises $7.3M seed funding to build specialized cloud infrastructure for AI agents, challenging AWS with purpose-built platform for autonomous AI systems....</p>
-                <a href="https://venturebeat.com/ai/blaxel-raises-7-3m-seed-round-to-build-aws-for-ai-agents-after-processing-billions-of-agent-requests/" target="_blank" class="read-more">자세히 읽기</a>
-            </div>
-            
-            <div class="news-card">
-                <div class="news-meta">
-                    <span class="news-source">VentureBeat</span>
-                    <span class="news-date">Thu, 17 Jul 2025</span>
-                </div>
-                <h3>Slack gets smarter: New AI tools summarize chats, explain jargon, and automate work</h3>
-                <p>Slack launches comprehensive AI features including enterprise search and writing assistance as Salesforce challenges Microsoft's workplace AI dominance while blocking rival access to platform data....</p>
-                <a href="https://venturebeat.com/ai/slack-gets-smarter-new-ai-tools-summarize-chats-explain-jargon-and-automate-work/" target="_blank" class="read-more">자세히 읽기</a>
-            </div>
-            
-            <div class="news-card">
-                <div class="news-meta">
                     <span class="news-source">AI News & Artificial Intelligence | TechCrunch</span>
                     <span class="news-date">Thu, 17 Jul 2025</span>
                 </div>
@@ -290,12 +441,42 @@
             
             <div class="news-card">
                 <div class="news-meta">
+                    <span class="news-source">VentureBeat</span>
+                    <span class="news-date">Thu, 17 Jul 2025</span>
+                </div>
+                <h3>OpenAI unveils ‘ChatGPT agent’ that gives ChatGPT its own computer to autonomously use your email and web apps, download and create files for you</h3>
+                <p>If a website needs you to log in, you can do that securely through a special browser view, which lets the agent dig deeper and handle more....</p>
+                <a href="https://venturebeat.com/ai/openai-unveils-chatgpt-agent-that-gives-chatgpt-its-own-computer-to-autonomously-use-your-email-and-web-apps-download-and-create-files-for-you/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-meta">
                     <span class="news-source">AI News & Artificial Intelligence | TechCrunch</span>
                     <span class="news-date">Thu, 17 Jul 2025</span>
                 </div>
                 <h3>OpenAI launches a general purpose agent in ChatGPT</h3>
                 <p>OpenAI announced the launch of ChatGPT agent, which the company claims to be its most capable AI agent product yet....</p>
                 <a href="https://techcrunch.com/2025/07/17/openai-launches-a-general-purpose-agent-in-chatgpt/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-meta">
+                    <span class="news-source">AI News</span>
+                    <span class="news-date">Thu, 17 Jul 2025</span>
+                </div>
+                <h3>Mistral AI gives Le Chat voice recognition and deep research tools</h3>
+                <p><p>Mistral AI has updated Le Chat with voice recognition, deep research tools, and other features to make the chatbot a more helpful assistant. The company believes that the best AI assistants should ...</p>
+                <a href="https://www.artificialintelligence-news.com/news/mistral-ai-le-chat-voice-recognition-deep-research-tools/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-meta">
+                    <span class="news-source">AI News</span>
+                    <span class="news-date">Thu, 17 Jul 2025</span>
+                </div>
+                <h3>Zuckerberg’s US$15b bet: How Meta’s ‘Superintelligence Labs’ became Silicon Valley’s most expensive AI talent war</h3>
+                <p><p>Mark Zuckerberg has a history of making audacious bets that reshape entire industries – and losing spectacularly when they don&#8217;t pan out. After burning through US$46 billion on the metaverse ...</p>
+                <a href="https://www.artificialintelligence-news.com/news/meta-superintelligence-ai-lab-zuckerberg-talent-war/" target="_blank" class="read-more">자세히 읽기</a>
             </div>
             
             <div class="news-card">
@@ -330,6 +511,16 @@
             
             <div class="news-card">
                 <div class="news-meta">
+                    <span class="news-source">VentureBeat</span>
+                    <span class="news-date">Thu, 17 Jul 2025</span>
+                </div>
+                <h3>Blaxel raises $7.3M seed round to build ‘AWS for AI agents’ after processing billions of agent requests</h3>
+                <p>Blaxel raises $7.3M seed funding to build specialized cloud infrastructure for AI agents, challenging AWS with purpose-built platform for autonomous AI systems....</p>
+                <a href="https://venturebeat.com/ai/blaxel-raises-7-3m-seed-round-to-build-aws-for-ai-agents-after-processing-billions-of-agent-requests/" target="_blank" class="read-more">자세히 읽기</a>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-meta">
                     <span class="news-source">AI News & Artificial Intelligence | TechCrunch</span>
                     <span class="news-date">Thu, 17 Jul 2025</span>
                 </div>
@@ -340,22 +531,12 @@
             
             <div class="news-card">
                 <div class="news-meta">
-                    <span class="news-source">AI News</span>
+                    <span class="news-source">VentureBeat</span>
                     <span class="news-date">Thu, 17 Jul 2025</span>
                 </div>
-                <h3>Mistral AI gives Le Chat voice recognition and deep research tools</h3>
-                <p><p>Mistral AI has updated Le Chat with voice recognition, deep research tools, and other features to make the chatbot a more helpful assistant. The company believes that the best AI assistants should ...</p>
-                <a href="https://www.artificialintelligence-news.com/news/mistral-ai-le-chat-voice-recognition-deep-research-tools/" target="_blank" class="read-more">자세히 읽기</a>
-            </div>
-            
-            <div class="news-card">
-                <div class="news-meta">
-                    <span class="news-source">AI News</span>
-                    <span class="news-date">Thu, 17 Jul 2025</span>
-                </div>
-                <h3>Zuckerberg’s US$15b bet: How Meta’s ‘Superintelligence Labs’ became Silicon Valley’s most expensive AI talent war</h3>
-                <p><p>Mark Zuckerberg has a history of making audacious bets that reshape entire industries – and losing spectacularly when they don&#8217;t pan out. After burning through US$46 billion on the metaverse ...</p>
-                <a href="https://www.artificialintelligence-news.com/news/meta-superintelligence-ai-lab-zuckerberg-talent-war/" target="_blank" class="read-more">자세히 읽기</a>
+                <h3>Slack gets smarter: New AI tools summarize chats, explain jargon, and automate work</h3>
+                <p>Slack launches comprehensive AI features including enterprise search and writing assistance as Salesforce challenges Microsoft's workplace AI dominance while blocking rival access to platform data....</p>
+                <a href="https://venturebeat.com/ai/slack-gets-smarter-new-ai-tools-summarize-chats-explain-jargon-and-automate-work/" target="_blank" class="read-more">자세히 읽기</a>
             </div>
             
         </div>
