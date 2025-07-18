@@ -145,9 +145,10 @@ class AINewsWebGenerator:
             'last', 'next', 'use', 'used', 'using', 'make', 'made', 'get',
             'year', 'time', 'work', 'way', 'company', 'technology', 'system',
             'report', 'study', 'research', 'development', 'application', 'service',
-            'platform', 'software', 'users', 'user', 'feature', 'features', 'chat',
-            'com', 'deep', 'search', 'you', 'model', 'artificial', 'intelligence',
-            'machine', 'learning'
+            'platform', 'software', 'users', 'user', 'feature', 'features', 
+            # 의미없는 AI 관련 단어들
+            'chat', 'tool', 'launch', 'update', 'data', 'tech', 'digital', 
+            'model', 'intelligence', 'artificial', 'machine', 'learning'
         }
         
         # 특별 키워드 (새로운 AI 도구/회사들)
@@ -170,7 +171,7 @@ class AINewsWebGenerator:
         
         # 빈도 5회 이상인 단어들 선택 (특별 키워드는 3회도 허용)
         for word, freq in word_freq.items():
-            if freq >= 4 or (freq >= 3 and word.lower() in special_keywords):
+            if freq >= 4 or (freq >= 2 and word.lower() in special_keywords):
                 auto_keywords.append(word.title())
         
         # 전체 키워드 통합
