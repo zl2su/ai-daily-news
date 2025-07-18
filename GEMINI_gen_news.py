@@ -166,7 +166,7 @@ class AINewsWebGenerator:
 
         # 빈도 5회 이상인 단어들 선택 (특별 키워드는 3회도 허용)
         for word, freq in word_freq.items():
-            if freq >= 4 or (freq >= 2 and word.lower() in special_keywords):
+            if freq >= 3 or (freq >= 2 and word.lower() in special_keywords):
                 auto_keywords.append(word.title())
                 print(f"  ✅ 키워드 추가: {word.title()} ({freq}회)")
 
