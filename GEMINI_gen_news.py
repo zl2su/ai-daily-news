@@ -123,8 +123,8 @@ class AINewsWebGenerator:
         
         # 최소한의 핵심 키워드만 (10개)
         core_keywords = [
-            'ai', 'chatgpt', 'openai', 'google', 'microsoft', 
-            'claude', 'gemini', 'anthropic', 'meta', 'nvidia'
+            'autonomous', 'medical', 'healthcare', 'education', 
+            'coding', 'robotics', 'vision', 'voice', 'multimodal'
         ]
         
         # 자동 단어 추출
@@ -144,7 +144,8 @@ class AINewsWebGenerator:
             'last', 'next', 'use', 'used', 'using', 'make', 'made', 'get',
             'year', 'time', 'work', 'way', 'company', 'technology', 'system',
             'report', 'study', 'research', 'development', 'application', 'service',
-            'platform', 'software', 'users', 'user', 'feature', 'features'
+            'platform', 'software', 'users', 'user', 'feature', 'features', 'com',
+            'search', 'You'
         }
         
         # 특별 키워드 (새로운 AI 도구/회사들)
@@ -167,7 +168,7 @@ class AINewsWebGenerator:
         
         # 빈도 3회 이상인 단어들 선택 (특별 키워드는 2회도 허용)
         for word, freq in word_freq.items():
-            if freq >= 3 or (freq >= 2 and word.lower() in special_keywords):
+            if freq >= 5 or (freq >= 3 and word.lower() in special_keywords):
                 auto_keywords.append(word.title())
         
         # 전체 키워드 통합
