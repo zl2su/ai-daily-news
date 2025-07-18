@@ -385,8 +385,6 @@ class AINewsWebGenerator:
 {{
   "today_summary": "오늘 뉴스의 핵심 내용 (2-3문장, 구체적 사실 기반)",
   "key_trends": ["뉴스에서 실제 언급된 트렌드만 3개"],
-  "market_insight": "뉴스에서 언급된 구체적 시장 변화나 데이터",
-  "executive_summary": "임원용 핵심 요약 (실제 뉴스 기반, 2-3문장)",
   "business_impact": {{
     "opportunities": [
       "실제 뉴스에서 언급된 구체적 비즈니스 기회 (기업명/제품명 포함)",
@@ -479,8 +477,6 @@ class AINewsWebGenerator:
         return {
             "today_summary": "AI 뉴스 분석을 위해 데이터를 처리 중입니다.",
             "key_trends": ["분석 진행 중"],
-            "market_insight": "시장 데이터 분석 중입니다.",
-            "executive_summary": "오늘의 AI 뉴스 분석이 진행 중입니다. 잠시 후 다시 확인해주세요.",
             "business_impact": {
                 "opportunities": ["데이터 분석 완료 후 업데이트 예정"],
                 "risks": ["분석 진행 중"],
@@ -503,10 +499,6 @@ class AINewsWebGenerator:
         <div class="executive-section">
             <div class="executive-header">
                 <h2>📊 보고</h2>
-                <div class="executive-summary-card">
-                    <h3>📋 Executive Summary</h3>
-                    <p class="executive-summary-text">{summary_data.get('executive_summary', '임원 요약 준비 중입니다.')}</p>
-                </div>
             </div>
             
             <div class="impact-grid">
@@ -1124,8 +1116,6 @@ class AINewsWebGenerator:
             마지막 업데이트: {current_time}
         </div>
         
-        {self.generate_executive_section_html(summary_data)}
-        
         <div class="summary-section">
             <div class="summary-card">
                 <h3>📈 오늘의 한줄 요약</h3>
@@ -1140,12 +1130,9 @@ class AINewsWebGenerator:
                     {''.join([f'<span class="trend-tag">{trend}</span>' for trend in summary_data.get('key_trends', ['분석 중'])])}
                 </div>
             </div>
-            
-            <div class="summary-card">
-                <h3>💡 시장 인사이트</h3>
-                <p>{summary_data.get('market_insight', '시장 분석 준비 중입니다.')}</p>
-            </div>
         </div>
+        
+        {self.generate_executive_section_html(summary_data)}
         
         <div class="news-grid">
         """
@@ -1241,4 +1228,3 @@ class AINewsWebGenerator:
 if __name__ == "__main__":
     generator = AINewsWebGenerator()
     generator.run()
-            
