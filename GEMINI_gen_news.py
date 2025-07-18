@@ -273,6 +273,37 @@ class AINewsWebGenerator:
         # 상위 10개 반환
         top_keywords = dict(keyword_counts.most_common(10))
         
+        # 일반 단어들 중 빈도 높은 것들 - 불용어 필터링 강화
+        word_freq = Counter([word for word in regular_words 
+                            if word not in stop_words and len(word) >= 3])
+        
+        # 빈도 3회 이상인 단어들 선택 (특별 키워드는 2회도 허용)
+        for word, freq in word_freq.items():
+            if freq >= 3 or (freq >= 2 and word.lower() in special_keywords):
+                auto_keywords.append(word.title())
+        
+        # 전체 키워드 통합
+        all_keywords = core_keywords + auto_keywords
+        
+        keyword_counts = Counter()
+        
+        # 키워드 빈도 계산
+        for keyword in all_keywords:
+            count = all_text.count(keyword.lower())
+            if count > 0:
+                # 표시명 정리
+                if keyword.lower() in ['ai', 'gpt', 'llm', 'api', 'ceo', 'cto']:
+                    display_name = keyword.upper()
+                elif keyword.lower() in special_keywords:
+                    display_name = keyword.title()
+                else:
+                    display_name = keyword.title()
+                
+                keyword_counts[display_name] = count
+        
+        # 상위 10개 반환
+        top_keywords = dict(keyword_counts.most_common(10))
+        
         print(f"🔍 최적화된 키워드 분석: {len(top_keywords)}개 발견")
         print(f"  📋 핵심 키워드: {len([k for k in core_keywords if k in all_text])}개")
         print(f"  🔍 자동 발견: {len(top_keywords) - len([k for k in core_keywords if k in all_text])}개")
