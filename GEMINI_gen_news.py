@@ -136,7 +136,6 @@ class AINewsWebGenerator:
         
         # 불용어 리스트
         stop_words = {
-            # 기본 불용어
             'the', 'and', 'for', 'are', 'with', 'this', 'that', 'from', 'new', 
             'will', 'can', 'said', 'more', 'about', 'than', 'also', 'have', 
             'has', 'been', 'its', 'they', 'their', 'news', 'says', 'would', 
@@ -145,14 +144,19 @@ class AINewsWebGenerator:
             'last', 'next', 'use', 'used', 'using', 'make', 'made', 'get',
             'year', 'time', 'work', 'way', 'company', 'technology', 'system',
             'report', 'study', 'research', 'development', 'application', 'service',
-            'platform', 'software', 'users', 'user', 'feature', 'features', 
-            # 의미없는 AI 관련 단어들
-            'chat', 'tool', 'launch', 'update', 'data', 'tech', 'digital', 
-            'model', 'intelligence', 'artificial', 'machine', 'learning',
-            # 문제가 되는 단어들 추가
-            'com', 'you', 'deep', 'search', 'agent', 'voice', 'chatgpt',
+            'platform', 'software', 'users', 'user', 'feature', 'features',
+            # 의미없는 AI 관련 단어들 (단수형 + 복수형)
+            'chat', 'chats', 'tool', 'tools', 'launch', 'update', 'updates', 
+            'data', 'tech', 'digital', 'model', 'models', 'intelligence', 
+            'artificial', 'machine', 'learning', 'voice', 'voices',
+            # 문제가 되는 단어들 (단수형 + 복수형)
+            'com', 'you', 'deep', 'search', 'agent', 'agents', 'chatgpt',
             'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
-            'out', 'over', 'back', 'down', 'only', 'think', 'come', 'its', 'any'
+            'out', 'over', 'back', 'down', 'only', 'think', 'come', 'its', 'any',
+            # 웹 관련 단어들 (로그에서 발견된 것들)
+            'href', 'https', 'www', 'http', 'html', 'link', 'links',
+            # 일반적인 단어들
+            'recognition', 'after', 'meta', 'pan', 'zuckerberg'
         }
         
         # 특별 키워드 (새로운 AI 도구/회사들)
