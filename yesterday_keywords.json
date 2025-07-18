@@ -1,12 +1,12 @@
 {
-  "Chat": 18,
   "New": 12,
-  "Deep": 10,
-  "Mistral": 9,
-  "Search": 9,
   "Agent": 9,
+  "Search": 9,
+  "Mistral": 9,
   "News": 8,
-  "Research": 8,
   "Its": 8,
-  "Openai": 7
+  "Research": 8,
+  "Openai": 7,
+  "Tool": 6,
+  "You": 6
 }
