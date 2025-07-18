@@ -145,7 +145,9 @@ class AINewsWebGenerator:
             'last', 'next', 'use', 'used', 'using', 'make', 'made', 'get',
             'year', 'time', 'work', 'way', 'company', 'technology', 'system',
             'report', 'study', 'research', 'development', 'application', 'service',
-            'platform', 'software', 'users', 'user', 'feature', 'features'
+            'platform', 'software', 'users', 'user', 'feature', 'features', 'chat',
+            'com', 'deep', 'search', 'you', 'model', 'artificial', 'intelligence',
+            'machine', 'learning'
         }
         
         # 특별 키워드 (새로운 AI 도구/회사들)
