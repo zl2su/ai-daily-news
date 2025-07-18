@@ -1,4 +1,4 @@
-# AI 뉴스 생성기 - 최적화된 키워드 차트 포함 버전 #
+# AI 뉴스 생성기 - 임원용 보고서 확장 버전 #
 import requests
 import feedparser
 import json
@@ -141,7 +141,7 @@ class AINewsWebGenerator:
             'when', 'where', 'what', 'how', 'why', 'who', 'which',
             'been', 'they', 'their', 'would', 'could', 'should', 'much',
             # 웹 관련 + 분리된 단어들 + 문제 단어들
-            'href', 'https', 'www', 'http', 'html', 'com',
+            'href', 'https', 'www', 'http', 'html', 'com', 'You'
             'chat', 'gpt', 'machine', 'learning', 'deep', 'artificial',
             'new', 'search', 'agent', 'news', 'research', 'its', 'openai'
         }
@@ -304,130 +304,6 @@ class AINewsWebGenerator:
         print(f"  📈 RISING: {rising_count}개")
         
         return trends
-        """최적화된 키워드 추출 (빈도 3회 + 특별 키워드)"""
-        from collections import Counter
-        import re
-        
-        # 모든 뉴스 텍스트 합치기
-        all_text = ""
-        for article in articles:
-            title = article.get('title', '').lower()
-            summary = article.get('summary', '').lower()
-            all_text += f" {title} {summary}"
-        
-        # 기술/응용 분야 중심 핵심 키워드
-        core_keywords = [
-            'autonomous', 'medical', 'healthcare', 'education', 
-            'coding', 'robotics', 'vision', 'voice', 'multimodal'
-        ]
-        
-        # 자동 단어 추출
-        # 대문자로 시작하는 단어들 (회사명, 제품명)
-        capitalized_words = re.findall(r'\b[A-Z][a-z]{2,15}\b', all_text.title())
-        
-        # 일반 단어들 (3글자 이상)
-        regular_words = re.findall(r'\b[a-z]{3,15}\b', all_text)
-        
-        # 진짜 기본적인 불용어만 (대폭 축소)
-        stop_words = {
-            'the', 'and', 'for', 'are', 'with', 'this', 'that', 'from',
-            'will', 'can', 'said', 'more', 'about', 'than', 'also', 'have',
-            'when', 'where', 'what', 'how', 'why', 'who', 'which',
-            'been', 'they', 'their', 'would', 'could', 'should', 'much',
-            # 웹 관련만 (진짜 의미없는 것들)
-            'href', 'https', 'www', 'http', 'html', 'com'
-        }
-        
-        # 특별 키워드 (새로운 AI 도구/회사들)
-        special_keywords = {
-            'sora', 'devin', 'claude', 'gemini', 'midjourney', 'cursor', 
-            'perplexity', 'runway', 'stability', 'cohere', 'replicate',
-            'huggingface', 'github', 'copilot', 'tesla', 'waymo'
-        }
-        
-        auto_keywords = []
-        
-        # 대문자 단어들 (회사명, 제품명 가능성 높음) - 불용어 필터링 추가
-        for word in set(capitalized_words):
-            if word.lower() not in stop_words and len(word) >= 3:
-                auto_keywords.append(word)
-        
-        print(f"🔍 stop_words 샘플: {list(stop_words)[:10]}")
-        
-        # 일반 단어들 중 빈도 높은 것들 - 불용어 필터링 강화
-        word_freq = Counter([word for word in regular_words 
-                            if word not in stop_words and len(word) >= 3])
-        
-        print(f"🔍 word_freq 상위 10개: {dict(word_freq.most_common(10))}")
-        
-        # 빈도 3회 이상으로 낮춤 (특별 키워드는 2회도 허용)
-        for word, freq in word_freq.items():
-            if freq >= 3 or (freq >= 2 and word.lower() in special_keywords):
-                auto_keywords.append(word.title())
-                print(f"  ✅ 키워드 추가: {word.title()} ({freq}회)")
-        
-        # 전체 키워드 통합
-        all_keywords = core_keywords + auto_keywords
-        
-        keyword_counts = Counter()
-        
-        # 키워드 빈도 계산
-        for keyword in all_keywords:
-            count = all_text.count(keyword.lower())
-            if count > 0:
-                # 표시명 정리
-                if keyword.lower() in ['ai', 'gpt', 'llm', 'api', 'ceo', 'cto']:
-                    display_name = keyword.upper()
-                elif keyword.lower() in special_keywords:
-                    display_name = keyword.title()
-                else:
-                    display_name = keyword.title()
-                
-                keyword_counts[display_name] = count
-        
-        # 상위 10개 반환
-        top_keywords = dict(keyword_counts.most_common(10))
-        
-        # 일반 단어들 중 빈도 높은 것들 - 불용어 필터링 강화
-        word_freq = Counter([word for word in regular_words 
-                            if word not in stop_words and len(word) >= 3])
-        
-        # 빈도 3회 이상인 단어들 선택 (특별 키워드는 2회도 허용)
-        for word, freq in word_freq.items():
-            if freq >= 3 or (freq >= 2 and word.lower() in special_keywords):
-                auto_keywords.append(word.title())
-        
-        # 전체 키워드 통합
-        all_keywords = core_keywords + auto_keywords
-        
-        keyword_counts = Counter()
-        
-        # 키워드 빈도 계산
-        for keyword in all_keywords:
-            count = all_text.count(keyword.lower())
-            if count > 0:
-                # 표시명 정리
-                if keyword.lower() in ['ai', 'gpt', 'llm', 'api', 'ceo', 'cto']:
-                    display_name = keyword.upper()
-                elif keyword.lower() in special_keywords:
-                    display_name = keyword.title()
-                else:
-                    display_name = keyword.title()
-                
-                keyword_counts[display_name] = count
-        
-        # 상위 10개 반환
-        top_keywords = dict(keyword_counts.most_common(10))
-        
-        print(f"🔍 최적화된 키워드 분석: {len(top_keywords)}개 발견")
-        print(f"  📋 핵심 키워드: {len([k for k in core_keywords if k in all_text])}개")
-        print(f"  🔍 자동 발견: {len(top_keywords) - len([k for k in core_keywords if k in all_text])}개")
-        
-        # 상위 5개 키워드 미리보기
-        for i, (keyword, count) in enumerate(list(top_keywords.items())[:5]):
-            print(f"    {i+1}. {keyword}: {count}회")
-        
-        return top_keywords
     
     def generate_keyword_chart_html(self, keyword_trends):
         """키워드 빈도 차트 HTML 생성 (트렌드 태그 포함)"""
@@ -474,128 +350,12 @@ class AINewsWebGenerator:
         chart_html += """
             </div>
         </div>
-        
-        <style>
-        .keyword-chart {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-        }
-        
-        .keyword-chart h3 {
-            color: #4facfe;
-            margin-bottom: 20px;
-            font-size: 1.3rem;
-        }
-        
-        .chart-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        
-        .keyword-bar {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .keyword-label {
-            min-width: 180px;
-            font-weight: 500;
-            color: #2c3e50;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .trend-tag {
-            font-size: 0.7rem;
-            padding: 2px 6px;
-            border-radius: 8px;
-            background: #f0f8ff;
-            border: 1px solid #4facfe;
-            color: #4facfe;
-            font-weight: 600;
-        }
-        
-        .bar-container {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .bar {
-            height: 25px;
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            border-radius: 12px;
-            min-width: 20px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .bar:hover {
-            transform: scaleY(1.1);
-            box-shadow: 0 3px 10px rgba(79, 172, 254, 0.3);
-        }
-        
-        .bar::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            animation: shine 2s infinite;
-        }
-        
-        @keyframes shine {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-        
-        .count {
-            font-weight: 600;
-            color: #4facfe;
-            min-width: 30px;
-            text-align: center;
-            font-size: 0.9rem;
-        }
-        
-        .change {
-            font-size: 0.8rem;
-            color: #666;
-            min-width: 40px;
-            text-align: right;
-        }
-        
-        @media (max-width: 768px) {
-            .keyword-label {
-                min-width: 140px;
-                font-size: 0.8rem;
-            }
-            
-            .bar {
-                height: 20px;
-            }
-            
-            .trend-tag {
-                font-size: 0.6rem;
-            }
-        }
-        </style>
         """
         
         return chart_html
     
     def get_gemini_summary(self, articles):
-        """Google Gemini API로 뉴스 요약"""
+        """Google Gemini API로 뉴스 요약 (일반용 + 임원용)"""
         print(f"📊 Gemini API 키 확인: {'설정됨' if self.gemini_api_key else '설정 안됨'}")
     
         if not self.gemini_api_key:
@@ -610,19 +370,44 @@ class AINewsWebGenerator:
             articles_text += f"   출처: {article['source']}\n\n"
         
         prompt = f"""
-다음 AI 뉴스들을 분석하여 JSON으로만 응답하세요. 다른 설명이나 텍스트는 포함하지 마세요.
+다음 AI 뉴스들을 분석하여 JSON으로만 응답하세요. 모든 내용은 제공된 뉴스에서만 추출하고, 일반적이거나 추상적인 내용은 포함하지 마세요.
 
 뉴스 목록:
 {articles_text}
 
+응답 규칙:
+1. 실제 뉴스에서 언급된 구체적인 내용만 사용
+2. 기업명, 제품명, 수치, 구체적 사건만 포함
+3. 일반론이나 뻔한 내용 금지
+4. 각 항목에 해당 뉴스 출처 표시
+
 응답 형식 (JSON만):
 {{
-  "today_summary": "한줄 요약",
-  "key_trends": ["트렌드1", "트렌드2", "트렌드3"],
-  "market_insight": "시장 분석"
+  "today_summary": "오늘 뉴스의 핵심 내용 (2-3문장, 구체적 사실 기반)",
+  "key_trends": ["뉴스에서 실제 언급된 트렌드만 3개"],
+  "market_insight": "뉴스에서 언급된 구체적 시장 변화나 데이터",
+  "executive_summary": "임원용 핵심 요약 (실제 뉴스 기반, 2-3문장)",
+  "business_impact": {{
+    "opportunities": [
+      "실제 뉴스에서 언급된 구체적 비즈니스 기회 (기업명/제품명 포함)",
+      "수치나 구체적 사례가 있는 기회만"
+    ],
+    "risks": [
+      "뉴스에서 실제 보도된 위험 사건이나 이슈만",
+      "구체적 기업이나 사건 기반 위험요소만"
+    ],
+    "competitive_moves": [
+      "뉴스에서 언급된 실제 기업의 구체적 행동",
+      "기업명과 구체적 행동 내용 포함"
+    ]
+  }},
+  "technology_watch": [
+    "뉴스에서 실제 언급된 기술명만",
+    "구체적 기술 이름이나 제품명"
+  ]
 }}
 
-위 JSON 형식으로만 응답하세요. 다른 텍스트는 절대 포함하지 마세요.
+중요: 뉴스에 없는 내용은 절대 추가하지 마세요. 구체적 사실만 포함하세요.
         """
         
         url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={self.gemini_api_key}"
@@ -666,20 +451,12 @@ class AINewsWebGenerator:
                             return parsed_data
                         else:
                             print("❌ JSON 형식을 찾을 수 없습니다")
-                            return {
-                                "today_summary": "JSON 파싱 실패로 인한 기본값",
-                                "key_trends": ["파싱", "실패"],
-                                "market_insight": "API 응답을 JSON으로 파싱할 수 없습니다."
-                            }
+                            return self.get_default_summary_data()
                             
                     except Exception as e:
                         print(f"❌ JSON 파싱 실패: {e}")
                         print(f"🔍 원본 응답: {content}")
-                        return {
-                            "today_summary": "AI 뉴스 요약 처리 중 오류 발생",
-                            "key_trends": ["데이터 처리 중"],
-                            "market_insight": "시장 분석 준비 중입니다."
-                        }
+                        return self.get_default_summary_data()
                 else:
                     print("❌ API 응답에 content가 없습니다")
                     print(f"🔍 전체 응답: {result}")
@@ -693,8 +470,344 @@ class AINewsWebGenerator:
             print(f"❌ Gemini API 오류: {e}")
             return None
     
+    def get_default_summary_data(self):
+        """기본 요약 데이터 (API 실패시 사용)"""
+        return {
+            "today_summary": "AI 뉴스 분석을 위해 데이터를 처리 중입니다.",
+            "key_trends": ["분석 진행 중"],
+            "market_insight": "시장 데이터 분석 중입니다.",
+            "executive_summary": "오늘의 AI 뉴스 분석이 진행 중입니다. 잠시 후 다시 확인해주세요.",
+            "business_impact": {
+                "opportunities": ["데이터 분석 완료 후 업데이트 예정"],
+                "risks": ["분석 진행 중"],
+                "competitive_moves": ["기업 동향 분석 중"]
+            },
+            "technology_watch": ["분석 중"]
+        }
+    
+    def generate_executive_section_html(self, summary_data):
+        """임원용 섹션 HTML 생성"""
+        business_impact = summary_data.get('business_impact', {})
+        opportunities = business_impact.get('opportunities', [])
+        risks = business_impact.get('risks', [])
+        competitive_moves = business_impact.get('competitive_moves', [])
+        recommendations = summary_data.get('strategic_recommendations', [])
+        investment_focus = summary_data.get('investment_focus', [])
+        technology_watch = summary_data.get('technology_watch', [])
+        
+        executive_html = f"""
+        <div class="executive-section">
+            <div class="executive-header">
+                <h2>🎯 임원 보고서</h2>
+                <div class="executive-summary-card">
+                    <h3>📋 Executive Summary</h3>
+                    <p class="executive-summary-text">{summary_data.get('executive_summary', '임원 요약 준비 중입니다.')}</p>
+                </div>
+            </div>
+            
+            <div class="impact-grid">
+                <div class="impact-card opportunities">
+                    <h3>🚀 비즈니스 기회</h3>
+                    <ul>
+                        {''.join([f'<li>{opp}</li>' for opp in opportunities])}
+                    </ul>
+                </div>
+                
+                <div class="impact-card risks">
+                    <h3>⚠️ 위험 요소</h3>
+                    <ul>
+                        {''.join([f'<li>{risk}</li>' for risk in risks])}
+                    </ul>
+                </div>
+                
+                <div class="impact-card competitive">
+                    <h3>🏢 경쟁사 동향</h3>
+                    <ul>
+                        {''.join([f'<li>{move}</li>' for move in competitive_moves])}
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="recommendations-section">
+                <h3>📈 전략적 권장사항</h3>
+                <div class="recommendations-grid">
+        """
+        
+        # 권장사항을 우선순위별로 정렬
+        priority_order = {'High': 1, 'Medium': 2, 'Low': 3}
+        sorted_recommendations = sorted(recommendations, key=lambda x: priority_order.get(x.get('priority', 'Medium'), 2))
+        
+        for rec in sorted_recommendations:
+            priority_class = rec.get('priority', 'Medium').lower()
+            executive_html += f"""
+                    <div class="recommendation-card {priority_class}">
+                        <div class="rec-priority">{rec.get('priority', 'Medium')}</div>
+                        <div class="rec-action">{rec.get('action', '')}</div>
+                        <div class="rec-timeline">⏱️ {rec.get('timeline', '')}</div>
+                    </div>
+            """
+        
+        executive_html += f"""
+                </div>
+            </div>
+            
+            <div class="focus-areas">
+                <div class="focus-card">
+                    <h3>💰 투자 검토 영역</h3>
+                    <div class="focus-tags">
+                        {''.join([f'<span class="focus-tag investment">{focus}</span>' for focus in investment_focus])}
+                    </div>
+                </div>
+                
+                <div class="focus-card">
+                    <h3>🔬 기술 모니터링</h3>
+                    <div class="focus-tags">
+                        {''.join([f'<span class="focus-tag technology">{tech}</span>' for tech in technology_watch])}
+                    </div>
+                </div>
+            </div>
+        </div>
+        """
+        
+        return executive_html
+    
+    def generate_executive_styles(self):
+        """임원용 섹션 CSS 스타일"""
+        return """
+        .executive-section {
+            background: #f8f9fa;
+            padding: 30px;
+            margin-bottom: 20px;
+            border-left: 5px solid #dc3545;
+        }
+        
+        .executive-header h2 {
+            color: #dc3545;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .executive-summary-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 4px solid #dc3545;
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.1);
+        }
+        
+        .executive-summary-card h3 {
+            color: #dc3545;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .executive-summary-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .impact-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .impact-card.opportunities {
+            border-left: 4px solid #28a745;
+        }
+        
+        .impact-card.risks {
+            border-left: 4px solid #ffc107;
+        }
+        
+        .impact-card.competitive {
+            border-left: 4px solid #6f42c1;
+        }
+        
+        .impact-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .opportunities h3 {
+            color: #28a745;
+        }
+        
+        .risks h3 {
+            color: #ffc107;
+        }
+        
+        .competitive h3 {
+            color: #6f42c1;
+        }
+        
+        .impact-card ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .impact-card li {
+            padding: 8px 0;
+            border-bottom: 1px solid #f1f3f4;
+            color: #495057;
+            font-size: 0.95rem;
+        }
+        
+        .impact-card li:last-child {
+            border-bottom: none;
+        }
+        
+        .recommendations-section {
+            margin-bottom: 30px;
+        }
+        
+        .recommendations-section h3 {
+            color: #dc3545;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+        
+        .recommendations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        
+        .recommendation-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            position: relative;
+        }
+        
+        .recommendation-card.high {
+            border-left: 4px solid #dc3545;
+        }
+        
+        .recommendation-card.medium {
+            border-left: 4px solid #ffc107;
+        }
+        
+        .recommendation-card.low {
+            border-left: 4px solid #6c757d;
+        }
+        
+        .rec-priority {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .recommendation-card.high .rec-priority {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .recommendation-card.medium .rec-priority {
+            background: #ffc107;
+            color: black;
+        }
+        
+        .recommendation-card.low .rec-priority {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .rec-action {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            padding-right: 60px;
+            font-size: 1rem;
+        }
+        
+        .rec-timeline {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .focus-areas {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+        }
+        
+        .focus-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .focus-card h3 {
+            color: #dc3545;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .focus-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .focus-tag {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .focus-tag.investment {
+            background: #e8f5e8;
+            color: #2e7d32;
+            border: 1px solid #4caf50;
+        }
+        
+        .focus-tag.technology {
+            background: #e3f2fd;
+            color: #1976d2;
+            border: 1px solid #2196f3;
+        }
+        
+        @media (max-width: 768px) {
+            .executive-section {
+                padding: 20px;
+            }
+            
+            .impact-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .recommendations-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .focus-areas {
+                grid-template-columns: 1fr;
+            }
+        }
+        """
+    
     def generate_html(self, articles, summary_data, keyword_trends=None):
-        """HTML 웹페이지 생성"""
+        """HTML 웹페이지 생성 (임원용 섹션 포함)"""
         current_time = time.strftime('%Y년 %m월 %d일 %H시 %M분')
         
         html_content = f"""
@@ -790,6 +903,107 @@ class AINewsWebGenerator:
             font-size: 0.9rem;
             font-weight: 500;
         }}
+        
+        .keyword-chart {{
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }}
+        
+        .keyword-chart h3 {{
+            color: #4facfe;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }}
+        
+        .chart-container {{
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }}
+        
+        .keyword-bar {{
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }}
+        
+        .keyword-label {{
+            min-width: 180px;
+            font-weight: 500;
+            color: #2c3e50;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }}
+        
+        .trend-tag {{
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 8px;
+            background: #f0f8ff;
+            border: 1px solid #4facfe;
+            color: #4facfe;
+            font-weight: 600;
+        }}
+        
+        .bar-container {{
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }}
+        
+        .bar {{
+            height: 25px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 12px;
+            min-width: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }}
+        
+        .bar:hover {{
+            transform: scaleY(1.1);
+            box-shadow: 0 3px 10px rgba(79, 172, 254, 0.3);
+        }}
+        
+        .bar::before {{
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shine 2s infinite;
+        }}
+        
+        @keyframes shine {{
+            0% {{ left: -100%; }}
+            100% {{ left: 100%; }}
+        }}
+        
+        .count {{
+            font-weight: 600;
+            color: #4facfe;
+            min-width: 30px;
+            text-align: center;
+            font-size: 0.9rem;
+        }}
+        
+        .change {{
+            font-size: 0.8rem;
+            color: #666;
+            min-width: 40px;
+            text-align: right;
+        }}
+        
+        {self.generate_executive_styles()}
         
         .news-grid {{
             display: grid;
@@ -902,6 +1116,19 @@ class AINewsWebGenerator:
             .summary-section {{
                 padding: 20px;
             }}
+            
+            .keyword-label {{
+                min-width: 140px;
+                font-size: 0.8rem;
+            }}
+            
+            .bar {{
+                height: 20px;
+            }}
+            
+            .trend-tag {{
+                font-size: 0.6rem;
+            }}
         }}
     </style>
 </head>
@@ -915,6 +1142,8 @@ class AINewsWebGenerator:
         <div class="update-time">
             마지막 업데이트: {current_time}
         </div>
+        
+        {self.generate_executive_section_html(summary_data)}
         
         <div class="summary-section">
             <div class="summary-card">
@@ -1011,22 +1240,18 @@ class AINewsWebGenerator:
         # 4. 오늘 키워드 저장 (내일을 위해)
         self.save_today_keywords(today_keywords)
         
-        # 5. Gemini 요약
+        # 5. Gemini 요약 (일반용 + 임원용)
         print("🤖 Gemini AI 분석 중...")
         summary_data = self.get_gemini_summary(articles)
         
         if not summary_data:
-            summary_data = {
-                "today_summary": "오늘의 AI 뉴스를 분석하고 있습니다.",
-                "key_trends": ["인공지능", "머신러닝", "딥러닝"],
-                "market_insight": "AI 기술이 빠르게 발전하고 있습니다."
-            }
+            summary_data = self.get_default_summary_data()
         
-        # 6. HTML 생성 (키워드 차트 포함)
+        # 6. HTML 생성 (임원용 섹션 포함)
         print("🎨 웹페이지 생성 중...")
         html_content = self.generate_html(articles, summary_data, keyword_trends)
         
-        # 5. 파일 저장
+        # 7. 파일 저장
         self.save_to_file(html_content)
         
         print("✅ 웹페이지 생성 완료!")

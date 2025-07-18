@@ -1,12 +1,12 @@
 {
+  "Chat": 13,
   "Mistral": 9,
-  "Tool": 6,
   "You": 6,
+  "Tool": 6,
   "Chatgpt": 5,
   "Voice": 5,
   "Tools": 5,
-  "Launch": 5,
   "Meta": 5,
-  "Pan": 5,
-  "Zuckerberg": 4
+  "Launch": 5,
+  "Pan": 5
 }
