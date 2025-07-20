@@ -1,12 +1,12 @@
 {
-  "Open": 11,
-  "Start": 9,
+  "Open": 12,
   "Red": 8,
+  "Start": 8,
+  "Win": 7,
+  "Startup": 6,
   "Safety": 5,
-  "Now": 5,
-  "Startup": 5,
-  "Chatgpt": 4,
-  "Code": 4,
+  "Source": 4,
+  "Now": 4,
   "Model": 4,
-  "Win": 4
+  "Code": 4
 }
