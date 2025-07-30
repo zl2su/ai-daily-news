@@ -1,12 +1,12 @@
 {
-  "All": 9,
-  "Power": 7,
-  "Mode": 6,
-  "Rate": 5,
-  "Per": 5,
-  "Run": 4,
-  "Anthropic": 4,
-  "Launch": 4,
-  "Chip": 4,
-  "Model": 4
+  "Mode": 7,
+  "Google": 6,
+  "Video": 6,
+  "Enterprise": 5,
+  "Help": 5,
+  "Veo": 5,
+  "Out": 4,
+  "Available": 4,
+  "Tools": 4,
+  "Chip": 4
 }
