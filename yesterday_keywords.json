@@ -1,12 +1,12 @@
 {
-  "Out": 8,
-  "Use": 7,
-  "Intel": 6,
-  "Enterprise": 6,
-  "Model": 6,
-  "Agentic": 5,
-  "Security": 5,
-  "Data": 5,
-  "Tech": 5,
-  "Open": 5
+  "Gen": 6,
+  "Meta": 5,
+  "Year": 5,
+  "Event": 4,
+  "Techcrunch": 4,
+  "Chatbot": 4,
+  "Marketing": 4,
+  "Disrupt": 4,
+  "Trust": 4,
+  "Consumer": 4
 }
