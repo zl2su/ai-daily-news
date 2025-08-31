@@ -1,12 +1,12 @@
 {
+  "Out": 8,
   "Gen": 6,
   "Meta": 5,
   "Year": 5,
   "Event": 4,
-  "Techcrunch": 4,
-  "Chatbot": 4,
   "Marketing": 4,
-  "Disrupt": 4,
+  "Chatbot": 4,
   "Trust": 4,
-  "Consumer": 4
+  "Drive": 4,
+  "Disrupt": 4
 }
