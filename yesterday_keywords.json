@@ -1,12 +1,12 @@
 {
-  "Tech": 15,
+  "Tech": 11,
   "Out": 8,
-  "All": 7,
+  "All": 6,
   "Security": 6,
-  "Attack": 6,
-  "Techcrunch": 6,
   "Models": 6,
-  "Was": 6,
-  "Intelligence": 5,
-  "Equity": 5
+  "Attack": 6,
+  "Equity": 5,
+  "Develop": 5,
+  "Privacy": 4,
+  "Own": 4
 }
