@@ -1,12 +1,12 @@
 {
-  "Water": 5,
-  "All": 5,
-  "Vice": 3,
-  "Crop": 3,
-  "Sora": 2,
-  "Out": 2,
-  "Work": 2,
-  "Intellectual": 2,
-  "Money": 2,
-  "Device": 2
+  "Open": 15,
+  "Dev": 10,
+  "Use": 9,
+  "Google": 7,
+  "Has": 7,
+  "Day": 6,
+  "Out": 6,
+  "Build": 6,
+  "Developer": 6,
+  "Chatgpt": 5
 }
