@@ -1,12 +1,12 @@
 {
-  "Ant": 86,
-  "Ref": 83,
-  "Age": 72,
-  "Gen": 72,
-  "Aud": 71,
-  "All": 71,
-  "Claude": 69,
-  "Pro": 65,
-  "Anthropic": 60,
-  "Model": 52
+  "Model": 48,
+  "Per": 46,
+  "All": 45,
+  "Mistral": 39,
+  "Devstral": 39,
+  "But": 28,
+  "Open": 27,
+  "Use": 27,
+  "Out": 25,
+  "Models": 24
 }
