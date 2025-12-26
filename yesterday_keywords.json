@@ -4,9 +4,9 @@
   "Prompt": 19,
   "Per": 18,
   "Out": 17,
-  "Enterprise": 16,
   "Defense": 16,
-  "End": 15,
+  "Enterprise": 16,
   "Mode": 15,
-  "Any": 14
+  "End": 15,
+  "Enterprises": 14
 }
