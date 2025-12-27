@@ -1,12 +1,12 @@
 {
-  "Red": 23,
-  "Quot": 20,
-  "Prompt": 19,
-  "Per": 18,
-  "Out": 17,
-  "Defense": 16,
-  "Enterprise": 16,
-  "Mode": 15,
-  "End": 15,
-  "Enterprises": 14
+  "Quot": 34,
+  "Pro": 33,
+  "Min": 31,
+  "Mode": 25,
+  "Low": 23,
+  "Voice": 21,
+  "Model": 21,
+  "Per": 21,
+  "Latency": 18,
+  "API": 17
 }
