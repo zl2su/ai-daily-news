@@ -1,12 +1,12 @@
 {
+  "Quot": 99,
+  "Claude": 70,
+  "Pro": 64,
+  "Work": 60,
   "Cache": 58,
-  "Quot": 53,
+  "All": 56,
   "Query": 48,
-  "Self": 40,
-  "Response": 36,
-  "Threshold": 33,
-  "Embed": 26,
-  "All": 24,
-  "Embedding": 22,
-  "Queries": 22
+  "Str": 46,
+  "Cowork": 45,
+  "Anthropic": 44
 }
