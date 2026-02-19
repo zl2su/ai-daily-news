@@ -1,12 +1,12 @@
 {
-  "Quot": 78,
-  "Pro": 56,
-  "Open": 53,
-  "Sonnet": 50,
-  "Per": 47,
-  "All": 45,
-  "Anthropic": 41,
-  "Data": 40,
-  "Claude": 40,
-  "Model": 35
+  "Gen": 80,
+  "Mode": 71,
+  "Model": 66,
+  "Per": 54,
+  "Pro": 49,
+  "Qwen": 43,
+  "All": 37,
+  "Quot": 37,
+  "Models": 29,
+  "Work": 28
 }
