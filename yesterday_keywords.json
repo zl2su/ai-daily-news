@@ -1,12 +1,12 @@
 {
-  "Quot": 88,
-  "Age": 60,
-  "Per": 40,
-  "All": 36,
-  "Her": 32,
-  "Inference": 32,
-  "Era": 31,
-  "Use": 30,
-  "Model": 26,
-  "Not": 22
+  "Agents": 32,
+  "Docker": 31,
+  "Claw": 30,
+  "All": 27,
+  "Nanoclaw": 26,
+  "Work": 21,
+  "Use": 20,
+  "Out": 19,
+  "Any": 18,
+  "Enterprise": 18
 }
