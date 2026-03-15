@@ -2,11 +2,11 @@
   "Agents": 32,
   "Docker": 31,
   "Claw": 30,
-  "All": 27,
   "Nanoclaw": 26,
+  "Use": 22,
   "Work": 21,
-  "Use": 20,
-  "Out": 19,
+  "All": 20,
   "Any": 18,
-  "Enterprise": 18
+  "Out": 18,
+  "Enterprise": 17
 }
