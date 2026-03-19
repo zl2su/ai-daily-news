@@ -1,12 +1,12 @@
 {
-  "Age": 203,
-  "Quot": 186,
-  "Pro": 148,
-  "Model": 134,
-  "Int": 133,
-  "All": 124,
-  "Per": 106,
-  "Nvidia": 87,
-  "Open": 80,
-  "Act": 74
+  "Pro": 80,
+  "Model": 77,
+  "Per": 73,
+  "Quot": 63,
+  "Max": 41,
+  "Art": 39,
+  "All": 39,
+  "Open": 35,
+  "Minimax": 34,
+  "High": 32
 }
