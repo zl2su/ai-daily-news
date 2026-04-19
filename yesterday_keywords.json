@@ -1,12 +1,12 @@
 {
-  "Age": 246,
-  "Gen": 194,
-  "Pro": 165,
-  "All": 92,
-  "Per": 91,
-  "Mode": 86,
-  "Model": 84,
-  "Quot": 80,
+  "Gen": 162,
+  "Pro": 133,
+  "Mode": 83,
+  "Model": 81,
+  "All": 78,
+  "Per": 77,
   "Sign": 72,
-  "App": 71
+  "Anthropic": 67,
+  "Rai": 62,
+  "Claude": 57
 }
