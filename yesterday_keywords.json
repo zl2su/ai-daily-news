@@ -1,12 +1,12 @@
 {
-  "Act": 32,
-  "Mode": 20,
-  "End": 19,
-  "Not": 18,
-  "Chaos": 18,
-  "System": 16,
-  "All": 16,
-  "Action": 16,
-  "Engineer": 16,
-  "Model": 16
+  "Mode": 40,
+  "Act": 36,
+  "All": 33,
+  "Model": 33,
+  "System": 29,
+  "Not": 28,
+  "End": 25,
+  "Debt": 25,
+  "Out": 23,
+  "Fail": 23
 }
