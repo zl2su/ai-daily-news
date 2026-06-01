@@ -1,12 +1,12 @@
 {
-  "Model": 79,
-  "Age": 78,
-  "All": 59,
-  "Memo": 59,
-  "Work": 52,
-  "Use": 45,
-  "Quot": 43,
-  "Per": 42,
-  "Act": 37,
-  "Over": 35
+  "Age": 26,
+  "Exploit": 21,
+  "Auth": 19,
+  "Vuln": 19,
+  "Patch": 15,
+  "All": 15,
+  "Credential": 14,
+  "Org": 14,
+  "Cve": 13,
+  "Hour": 12
 }
