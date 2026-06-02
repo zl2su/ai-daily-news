@@ -1,12 +1,12 @@
 {
-  "Age": 26,
-  "Exploit": 21,
-  "Auth": 19,
-  "Vuln": 19,
-  "Patch": 15,
-  "All": 15,
-  "Credential": 14,
-  "Org": 14,
-  "Cve": 13,
-  "Hour": 12
+  "Pro": 83,
+  "Age": 67,
+  "Per": 66,
+  "Mode": 62,
+  "Model": 58,
+  "One": 42,
+  "Open": 38,
+  "Ide": 38,
+  "Max": 37,
+  "All": 36
 }
