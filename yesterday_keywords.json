@@ -1,12 +1,12 @@
 {
-  "Pro": 79,
-  "Mode": 70,
-  "Model": 68,
-  "Per": 66,
+  "Pro": 78,
+  "Per": 67,
+  "Model": 66,
+  "Gen": 64,
+  "Anthropic": 62,
+  "Ons": 60,
+  "Sonnet": 55,
   "All": 54,
-  "See": 45,
-  "Sec": 45,
-  "Spec": 44,
-  "Dspark": 44,
-  "Not": 43
+  "Era": 51,
+  "Work": 42
 }
