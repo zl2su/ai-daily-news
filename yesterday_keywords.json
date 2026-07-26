@@ -1,12 +1,12 @@
 {
-  "Mode": 57,
+  "Mode": 58,
+  "Model": 56,
   "Opus": 55,
   "Anthropic": 54,
-  "Model": 54,
-  "Per": 47,
+  "Per": 48,
   "Quot": 40,
   "Claude": 40,
-  "All": 35,
-  "Pro": 34,
-  "One": 27
+  "Pro": 38,
+  "All": 37,
+  "One": 28
 }
