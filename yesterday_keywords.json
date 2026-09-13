@@ -1,12 +1,12 @@
 {
-  "Open": 9,
-  "Time": 5,
+  "Open": 12,
+  "Time": 6,
+  "Anthropic": 5,
   "Found": 5,
-  "Even": 5,
   "One": 5,
-  "Allocation": 4,
-  "Computer": 4,
-  "Out": 4,
-  "Nvidia": 4,
-  "Foundry": 4
+  "Out": 5,
+  "Even": 5,
+  "Foundry": 4,
+  "Company": 4,
+  "Computer": 4
 }
