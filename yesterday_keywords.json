@@ -1,12 +1,12 @@
 {
+  "Run": 7,
+  "Devices": 7,
+  "Tech": 6,
   "Day": 6,
-  "All": 6,
-  "Rate": 5,
-  "Out": 5,
-  "Run": 5,
-  "Work": 4,
-  "Design": 4,
-  "Generated": 4,
-  "Agents": 4,
-  "Techcrunch": 4
+  "Amazon": 5,
+  "Launch": 5,
+  "Techcrunch": 5,
+  "App": 5,
+  "Under": 5,
+  "Use": 4
 }
