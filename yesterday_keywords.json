@@ -1,12 +1,12 @@
 {
-  "Live": 4,
-  "Model": 4,
-  "All": 4,
-  "Tech": 3,
-  "Agents": 3,
-  "App": 3,
+  "All": 9,
+  "Way": 5,
+  "Computers": 4,
+  "Out": 4,
+  "Tech": 4,
+  "Anthropic": 4,
   "Quantum": 3,
-  "Run": 3,
-  "List": 3,
-  "Grok": 3
+  "File": 3,
+  "Not": 3,
+  "Even": 3
 }
