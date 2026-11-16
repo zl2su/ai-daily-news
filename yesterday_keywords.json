@@ -1,12 +1,12 @@
 {
-  "Nvidia": 10,
-  "Huang": 9,
-  "Jensen": 8,
-  "Out": 7,
+  "Nvidia": 6,
   "Over": 6,
-  "Startup": 5,
+  "App": 6,
+  "Jensen": 5,
   "Sign": 5,
-  "Security": 4,
-  "Chip": 4,
-  "China": 4
+  "All": 4,
+  "Tech": 4,
+  "Huang": 4,
+  "Security": 3,
+  "Other": 3
 }
